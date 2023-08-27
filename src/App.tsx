@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import { doc, setDoc, getDocs, deleteDoc, getFirestore } from 'firebase/firestore';
+import { tracksCol } from './composables/useDb';
 
-function App() {
-  const [count, setCount] = useState(0)
+const setNewSong = async () => {
+  const trackRef = doc(tracksCol, 'test_item');
+  return await setDoc(trackRef, {
+    song: 'It is What It Is',
+    artist: 'Blood Orange',
+    album: 'Cupid Deluxe',
+    id: 'idk this yet',
+  })
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  /*
+    example of how to call in a function
+    setNewSong()
+    .then(() => {
+      console.log('Successful');
+    })
+    .catch((error) => {
+      console.log(`Unsuccessful returned error ${error}`);
+    });
+    */
 }
 
-export default App
+const getAllDocuments = async () => {
+  return await getDocs(tracksCol);
+  
+  /*
+    example of how to call the information inside a useEffect
+    const info = getAllDocuments();
+    info.then(track => {
+      track.docs.forEach(info => {
+        console.log(info.data())
+      });
+    })
+  */
+}
+
+const deleteTrack = async () => {
+  const firestore = getFirestore();
+  const docRef = doc(firestore, 'tracks', '3CA9pLiwRIGtUBiMjbZmRw');
+  return await deleteDoc(docRef);
+
+  /** 
+    example of how to call the function in the useEffect
+    deleteTrack()
+    .then(() => {
+      console.log('Great Success');
+    })
+    .catch((error) => {
+      console.log(`Uh oh, error: ${error}`);
+    })
+  */
+
+}
+
+export default function App() {
+
+  useEffect(() => {
+
+  }, []);
+  
+  return (
+    <p>Consider a different tutorial</p>
+  )
+}

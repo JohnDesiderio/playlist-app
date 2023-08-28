@@ -3,6 +3,7 @@ import { Grid, GridProps, Button } from '@mui/material';
 import { IRGProps, ITrack } from './IResultsTypes';
 import { parentResultsGridStyles, sendResultsStyles } from './results-grid-styles';
 import ResultGridItem from './results-grid-item';
+import { addSelectedSongs } from './business-logic/appRequest';
 
 type ResultsGridProps = GridProps & IRGProps;
 
@@ -22,6 +23,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
     }, [itemsSize])
 
     useEffect(() => {
+        addSelectedSongs(mappedItems);
         mappedItems.clear();
         setItemsSize(0);
         props.resetResponse();

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button } from '@mui/material';
-import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+import { Button, Grid } from '@mui/material';
+import theme from '../theme/theme';
 
 /*
+import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+
 const api = SpotifyApi.withUserAuthorization(
     '9dc3cfe6f686431f878571165c601f37',
     'http:127.0.0.1:5000/create',
@@ -25,13 +27,19 @@ if (count !== 0) {
 */
 
 const LandingPage:React.FC<{}> = () => {
-    
+
+
     return (
-        <Box>
-            <Button>
-                Submit
-            </Button>
-        </Box>
+        <Grid 
+            container
+            sx={{
+                backgroundColor: theme.palette.primary.light,
+                width: '100vw',
+                height: '100vh'
+            }}
+        >
+
+        </Grid>
     )
 }
 

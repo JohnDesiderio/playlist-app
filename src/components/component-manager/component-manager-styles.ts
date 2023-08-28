@@ -7,7 +7,7 @@ export const headerTextStyles = {
 }
 
 export const buttonStyles = {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.primary.main,
     width: '90px',
     height: '60px',

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { Grid, Box, Typography } from '@mui/material';
+import React from 'react';
+import { Grid } from '@mui/material';
 import { landingPageStyles } from './landing-page-styles';
 import ComponentManagerGrid from '../component-manager/component-manager';
-import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 
 /*
 import { SpotifyApi } from '@spotify/web-api-ts-sdk';

@@ -5,7 +5,10 @@ import { searchButtonStyles } from './textfield-search-styles';
 const SearchButton:React.FC<ButtonProps> = (props: ButtonProps) => {
 
     return (
-        <Button {...props} sx={searchButtonStyles}>Submit</Button>
+        <Button 
+            {...props} 
+            sx={searchButtonStyles}
+        >Submit</Button>
     )
 }
 

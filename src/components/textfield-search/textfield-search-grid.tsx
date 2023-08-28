@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchTextField from './search-textfield';
 import { Grid } from '@mui/material';
 import SearchButton from './search-button';
 
-const TextfieldSearchGrid:React.FC<{}> = (props) => {
+const TextfieldSearchGrid:React.FC<{}> = () => {
+    const [disableSearch, setDisableSearch] = useState<boolean>(true);
+    
+    const textfieldCallback = (disable: boolean) => {
+        setDisableSearch(disable);
+    }
+
     return (
         <Grid 
             container 
@@ -12,8 +18,12 @@ const TextfieldSearchGrid:React.FC<{}> = (props) => {
             direction='column'
             sx={{marginTop: '2vh'}}
         >
-            <SearchTextField/>
-            <SearchButton/>
+            <SearchTextField
+                handleDisable={textfieldCallback}
+            />
+            <SearchButton 
+                disabled={disableSearch}
+            />
         </Grid>
     );
 }

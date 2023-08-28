@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import { landingPageStyles } from './landing-page-styles';
-import HeaderGrid from '../header/header';
+import ComponentManagerGrid from '../component-manager/component-manager';
 import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 
 /*
@@ -39,10 +39,7 @@ const LandingPage:React.FC<{}> = () => {
             flex={1}
         >
             <Grid item>
-                <HeaderGrid/>
-            </Grid>
-            <Grid item>
-                <Box><Typography>HEllo</Typography></Box>
+                <ComponentManagerGrid/>
             </Grid>
         </Grid>
     )

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Grid, GridProps, Typography, Button } from '@mui/material';
-import { headerTextStyles, buttonStyles, headerGridStyles } from './header-styles';
+import { headerTextStyles, buttonStyles, headerGridStyles } from './component-manager-styles';
+import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 
-const HeaderGrid:React.FC<GridProps> = (props: GridProps) => {
+const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     return (
         <Grid sx={headerGridStyles} container justifyContent='center'>
@@ -31,10 +32,10 @@ const HeaderGrid:React.FC<GridProps> = (props: GridProps) => {
                 </Grid>
             </Grid>
             <Grid item>
-                <Button>Yo</Button>
+                <TextfieldSearchGrid/>
             </Grid>
         </Grid>
     )
 }
 
-export default HeaderGrid;
+export default ComponentManagerGrid;

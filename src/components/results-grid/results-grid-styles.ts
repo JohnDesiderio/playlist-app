@@ -18,6 +18,10 @@ export const sendResultsStyles = {
     width: '90px',
     height: '60px',
     margin: '1vw',
+    '&.Mui-disabled': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.light,
+    }
 }
 
 export const paperStyles = {

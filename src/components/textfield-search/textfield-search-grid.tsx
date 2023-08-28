@@ -11,11 +11,15 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
     const [query, setQuery] = useState<string>('');
     const [accessToken, setAccessToken] = useState<string>('');
     const [buttonPress, setButtonPress] = useState<boolean>(false);
-    const [response, setResponse] = useState<ISpotifyResponse>();
+    const [response, setResponse] = useState<ISpotifyResponse | undefined>();
 
     const textfieldCallback = (disable: boolean, text: string) => {
         setDisableSearch(disable);
         setQuery(text);
+    }
+
+    const resetSearchBar = () => {
+        setResponse(undefined);
     }
 
     useEffect(() => {
@@ -59,6 +63,7 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
             />
             <ResultsGrid
                 response={response}
+                resetResponse={resetSearchBar}
             />
         </Grid>
     );

@@ -5,9 +5,11 @@ import SearchButton from './search-button';
 
 const TextfieldSearchGrid:React.FC<{}> = () => {
     const [disableSearch, setDisableSearch] = useState<boolean>(true);
-    
-    const textfieldCallback = (disable: boolean) => {
+    const [query, setQuery] = useState<string>('');
+
+    const textfieldCallback = (disable: boolean, text: string) => {
         setDisableSearch(disable);
+        setQuery(text);
     }
 
     return (
@@ -22,6 +24,7 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
                 handleDisable={textfieldCallback}
             />
             <SearchButton 
+                onClick={() => {console.log(query)}}
                 disabled={disableSearch}
             />
         </Grid>

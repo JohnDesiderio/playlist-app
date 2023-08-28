@@ -6,8 +6,8 @@ import { ITextfieldProps } from './ITextfieldProps';
 type SearchTextFieldProps = TextFieldProps & ITextfieldProps;
 
 const SearchTextField:React.FC<SearchTextFieldProps> = (props: SearchTextFieldProps) => {
-    const [text, setText] = useState<string>('')
     const [disableSearch, setDisableSearch] = useState<boolean>(true);
+    const [text, setText] = useState<string>('');
 
     const onTextChange = (e: any) => {
         if (/(?!^$)([^\s])/.test(e.target.value)) {
@@ -19,7 +19,7 @@ const SearchTextField:React.FC<SearchTextFieldProps> = (props: SearchTextFieldPr
     }
     
     useEffect(() => {
-        props.handleDisable(disableSearch)
+        props.handleDisable(disableSearch, text);
     }, [text])
 
     return (

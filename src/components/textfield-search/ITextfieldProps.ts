@@ -1,3 +1,3 @@
 export interface ITextfieldProps {
-    handleDisable: (bool: boolean) => void,
+    handleDisable: (bool: boolean, text: string) => void,
 }

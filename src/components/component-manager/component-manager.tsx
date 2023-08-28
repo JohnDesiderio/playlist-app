@@ -6,7 +6,7 @@ import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     return (
-        <Grid sx={headerGridStyles} container justifyContent='center'>
+        <Grid {...props} sx={headerGridStyles} container justifyContent='center'>
             <Grid item>
                 <Typography
                     sx={headerTextStyles}

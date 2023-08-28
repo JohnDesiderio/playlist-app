@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { doc, setDoc, getDocs, deleteDoc, getFirestore } from 'firebase/firestore';
 import { tracksCol } from './composables/useDb';
 import LandingPage from './components/landing-page/landing-page';
 
-const setNewSong = async () => {
+export const setNewSong = async () => {
   const trackRef = doc(tracksCol, 'test_item');
   return await setDoc(trackRef, {
     song: 'It is What It Is',
@@ -24,7 +23,7 @@ const setNewSong = async () => {
     */
 }
 
-const getAllDocuments = async () => {
+export const getAllDocuments = async () => {
   return await getDocs(tracksCol);
   
   /*
@@ -38,7 +37,7 @@ const getAllDocuments = async () => {
   */
 }
 
-const deleteTrack = async () => {
+export const deleteTrack = async () => {
   const firestore = getFirestore();
   const docRef = doc(firestore, 'tracks', '3CA9pLiwRIGtUBiMjbZmRw');
   return await deleteDoc(docRef);

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Grid } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Grid, Box, Typography } from '@mui/material';
 import { landingPageStyles } from './landing-page-styles';
+import HeaderGrid from '../header/header';
+import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 
 /*
 import { SpotifyApi } from '@spotify/web-api-ts-sdk';
@@ -27,15 +29,21 @@ if (count !== 0) {
 */
 
 const LandingPage:React.FC<{}> = () => {
-
+    // use useEffect to call spotify token then pass down the props
 
     return (
-        <Grid 
+        <Grid
             container
             sx={landingPageStyles}
             justifyContent='center'
+            flex={1}
         >
-            
+            <Grid item>
+                <HeaderGrid/>
+            </Grid>
+            <Grid item>
+                <Box><Typography>HEllo</Typography></Box>
+            </Grid>
         </Grid>
     )
 }

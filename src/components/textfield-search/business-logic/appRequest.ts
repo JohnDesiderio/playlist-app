@@ -4,7 +4,7 @@ import { ISpotifyResponse, ISpotifyAccessToken } from './ISpotifyTypes';
 export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken> | undefined> => {
     const config:AxiosRequestConfig = {
         method: 'post',
-        url: 'https://account.spotify.com/api/token',
+        url: 'https://accounts.spotify.com/api/token',
         data: {
             'grant_type': 'client_credentials',
             'client_id': '9dc3cfe6f686431f878571165c601f37',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Grid } from '@mui/material';
-import theme from '../theme/theme';
+import { landingPageStyles } from './landing-page-styles';
 
 /*
 import { SpotifyApi } from '@spotify/web-api-ts-sdk';
@@ -32,13 +32,10 @@ const LandingPage:React.FC<{}> = () => {
     return (
         <Grid 
             container
-            sx={{
-                backgroundColor: theme.palette.primary.light,
-                width: '100vw',
-                height: '100vh'
-            }}
+            sx={landingPageStyles}
+            justifyContent='center'
         >
-
+            
         </Grid>
     )
 }

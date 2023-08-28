@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { doc, setDoc, getDocs, deleteDoc, getFirestore } from 'firebase/firestore';
 import { tracksCol } from './composables/useDb';
+import LandingPage from './components/landing-page/landing-page';
 
 const setNewSong = async () => {
   const trackRef = doc(tracksCol, 'test_item');
@@ -57,11 +58,7 @@ const deleteTrack = async () => {
 
 export default function App() {
 
-  useEffect(() => {
-
-  }, []);
-  
   return (
-    <p>Consider a different tutorial</p>
+    <LandingPage/>
   )
 }

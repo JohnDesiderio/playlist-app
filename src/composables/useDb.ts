@@ -1,7 +1,7 @@
 //Get the imports
 import { initializeApp } from 'firebase/app';
 import { getFirestore, CollectionReference, collection, DocumentData } from 'firebase/firestore';
-import { track } from './ObjectTypes';
+import { track } from './ITrack';
 
 // Init the firebase app
 export const firebaseApp = initializeApp({

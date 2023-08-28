@@ -1,15 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid, GridProps, Button } from '@mui/material';
 import { IRGProps } from './IResultsTypes';
-import { parentResultsGridStyles, sendResultsStyles, paperStyles } from './results-grid-styles';
+import { parentResultsGridStyles, sendResultsStyles } from './results-grid-styles';
 import ResultGridItem from './results-grid-item';
 
 type ResultsGridProps = GridProps & IRGProps;
 
 const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
-    useEffect(() => {
-        console.log(props.response)
-    }, [props.response])
     
     if (props.response !== undefined) {
         return (
@@ -23,7 +20,6 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                         {props.response.tracks.items.map(item =>
                             <>
                                 <ResultGridItem
-                                    sx={paperStyles}
                                     song={item.name}
                                     album={item.album.name}
                                     id={item.id}

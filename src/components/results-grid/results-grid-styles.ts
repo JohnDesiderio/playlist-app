@@ -22,7 +22,19 @@ export const sendResultsStyles = {
 
 export const paperStyles = {
     marginTop: '5px',
-    width: '300px'
+    width: '300px',
+    ':hover': {
+        cursor: 'pointer',
+    }
+}
+
+export const clickedPaperStyles = {
+    marginTop: '5px',
+    width: '300px',
+    backgroundColor: '#d1d1d1',
+    ':hover': {
+        cursor: 'pointer',
+    }
 }
 
 export const typographyStyles = {

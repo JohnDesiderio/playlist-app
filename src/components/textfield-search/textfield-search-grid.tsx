@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import SearchTextField from './search-textfield';
-import { Grid } from '@mui/material';
+import { Grid, Modal } from '@mui/material';
 import SearchButton from './search-button';
 import { getAccessToken, getSearchResults } from './business-logic/appRequest';
 import ResultsGrid from '../results-grid/results-grid';
 import { ISpotifyResponse } from './business-logic/ISpotifyTypes';
+import ThankYouModal from '../modals/modal-thank-you';
 
 const TextfieldSearchGrid:React.FC<{}> = () => {
     const [disableSearch, setDisableSearch] = useState<boolean>(true);
@@ -12,6 +13,10 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
     const [accessToken, setAccessToken] = useState<string>('');
     const [buttonPress, setButtonPress] = useState<boolean>(false);
     const [response, setResponse] = useState<ISpotifyResponse | undefined>();
+    const [thankYou, setThankYou] = useState<boolean>(false);
+
+    const setThankYouOpen = () => setThankYou(true);
+    const setThankYouClose = () => setThankYou(false); 
 
     const textfieldCallback = (disable: boolean, text: string) => {
         setDisableSearch(disable);
@@ -64,7 +69,11 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
             <ResultsGrid
                 response={response}
                 resetResponse={resetSearchBar}
+                openThankYou={setThankYouOpen}
             />
+            <Modal open={thankYou} onClose={() => setThankYou(false)}>
+                <ThankYouModal exitFunction={setThankYouClose}/>
+            </Modal>
         </Grid>
     );
 }

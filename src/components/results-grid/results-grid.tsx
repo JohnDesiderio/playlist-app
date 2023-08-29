@@ -12,7 +12,7 @@ const mappedItems = new Map<string, ITrack>();
 const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
     const [itemsSize, setItemsSize] = useState<number>(mappedItems.size);
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
-    const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+    const [submitClicked, setSubmitClicked] = useState<number>(0);
 
     useEffect(() => {
         if (itemsSize === 0) {
@@ -23,10 +23,13 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
     }, [itemsSize])
 
     useEffect(() => {
-        addSelectedSongs(mappedItems);
-        mappedItems.clear();
-        setItemsSize(0);
-        props.resetResponse();
+        if (submitClicked !== 0) {
+            addSelectedSongs(mappedItems);
+            mappedItems.clear();
+            setItemsSize(0);
+            props.openThankYou();
+            props.resetResponse();
+        }
     }, [submitClicked])
 
 
@@ -70,7 +73,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                     sx={sendResultsStyles}
                     disabled={disableSubmit}
                     onClick={() => {
-                        setSubmitClicked(!submitClicked);
+                        setSubmitClicked(submitClicked + 1);
                     }}
                 >
                         Submit

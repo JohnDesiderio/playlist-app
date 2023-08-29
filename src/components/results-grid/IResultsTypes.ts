@@ -11,4 +11,5 @@ export interface ITrack {
 export interface IRGProps {
     response: ISpotifyResponse | undefined,
     resetResponse: () => void,
+    openThankYou: () => void,
 }

@@ -3,9 +3,9 @@ import { Grid, GridProps, Typography, Button } from '@mui/material';
 import { gridModalStyles, typographyStyles, exitButtonStyles } from './modal-styles';
 import { IModal } from './IModalTypes';
 
-type TYModalProps = GridProps & IModal;
+type emptyModalProps = GridProps & IModal;
 
-const ThankYouModal:React.FC<TYModalProps> = (props: TYModalProps) => {
+const EmptyModal:React.FC<emptyModalProps> = (props: emptyModalProps) => {
     return (
         <Grid 
             container
@@ -22,9 +22,9 @@ const ThankYouModal:React.FC<TYModalProps> = (props: TYModalProps) => {
             >
                 <Grid item>
                     <Typography sx={typographyStyles}>
-                        Thank you for adding music to the global playlist 🥳🙈🤩
+                        There are no songs in the global database right now 😕📉🍳
                         <br/>
-                        So when are you gonna steal all the tracks? 😳🙊👀
+                        I think you should go put the first song in there 🫣🦧🫦
                     </Typography>
                 </Grid>
                 <Button
@@ -38,4 +38,4 @@ const ThankYouModal:React.FC<TYModalProps> = (props: TYModalProps) => {
     )
 }
 
-export default ThankYouModal;
+export default EmptyModal;

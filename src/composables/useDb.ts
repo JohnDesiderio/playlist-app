@@ -16,7 +16,7 @@ export const firebaseApp = initializeApp({
 
 export const firestore = getFirestore();
 
-// This is just a helper fto add the type to the db repsonses
+// This is just a helper to add the type to the db repsonses
 const createCollection = <T = DocumentData>(collectionName: string) => {
     return collection(firestore, collectionName) as CollectionReference<T>;
 }

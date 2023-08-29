@@ -1,6 +1,6 @@
 import theme from "../theme/theme";
 
-export const thankYouModalStyles = {
+export const gridModalStyles = {
     width: '80vw',
     height: '80vh',
     backgroundColor: theme.palette.primary.light,
@@ -15,7 +15,7 @@ export const typographyStyles = {
     margin: '5vw',
 }
 
-export const yourWelcomeButtonStyles = {
+export const exitButtonStyles = {
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.primary.main,
     width: '90px',

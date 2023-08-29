@@ -4,13 +4,18 @@ import { headerTextStyles, buttonStyles, headerGridStyles } from './component-ma
 import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
 import { getAllDocuments } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
+import AboutModal from '../modals/modal-about';
 
 const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [buttonPress, setButtonPress] = useState<number>(0);
     const [emptyModal, setEmptyModal] = useState<boolean>(false);
+    const [aboutModal, setAboutModal] = useState<boolean>(false);
 
     const handleEmptyModalOpen = () => setEmptyModal(true);
     const handleEmptyModalClose = () => setEmptyModal(false);
+
+    const handleAboutModalOpen = () => setAboutModal(true);
+    const handleAboutModalClose = () => setAboutModal(false);
 
     useEffect(() => {
         if (buttonPress !== 0) {
@@ -39,6 +44,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             >   
                 <Grid item>
                     <Button
+                        onClick={handleAboutModalOpen}
                         sx={buttonStyles}
                     >
                         About
@@ -58,6 +64,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             </Grid>
             <Modal open={emptyModal} onClose={handleEmptyModalClose}>
                 <EmptyModal exitFunction={handleEmptyModalClose}/>
+            </Modal>
+            <Modal open={aboutModal} onClose={handleAboutModalClose}>
+                <AboutModal exitFunction={handleAboutModalClose}/>
             </Modal>
         </Grid>
     )

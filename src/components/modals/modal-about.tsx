@@ -1,11 +1,11 @@
 import React from 'react';
-import { Grid, GridProps, Typography, Button } from '@mui/material';
+import {Grid, GridProps, Typography, Button } from '@mui/material';
 import { gridModalStyles, typographyStyles, exitButtonStyles } from './modal-styles';
 import { IModal } from './IModalTypes';
 
-type EmptyModalProps = GridProps & IModal;
+type AboutModalProps = GridProps & IModal;
 
-const EmptyModal:React.FC<EmptyModalProps> = (props: EmptyModalProps) => {
+const AboutModal:React.FC<AboutModalProps> = (props: AboutModalProps) => {
     return (
         <Grid 
             container
@@ -22,9 +22,14 @@ const EmptyModal:React.FC<EmptyModalProps> = (props: EmptyModalProps) => {
             >
                 <Grid item>
                     <Typography sx={typographyStyles}>
-                        There are no songs in the global database right now 😕📉🍳
+                        A global database to manage song recommendations! 🌎🌏🌍
                         <br/>
-                        I think you should go put the first song in there 🫣🦧🫦
+                        There are two functions to the app: give or take. 🍞🍷🫁
+                        <br/>
+                        - Give: Submit a song and put it in the global database! 🦕⚡️🌪️
+                        <br/>
+                        - Take: Download the tracks submitted in the global
+                    <br/>into a playlist that belongs to you and only you 💋🇬🇮🆙
                     </Typography>
                 </Grid>
                 <Button
@@ -38,4 +43,4 @@ const EmptyModal:React.FC<EmptyModalProps> = (props: EmptyModalProps) => {
     )
 }
 
-export default EmptyModal;
+export default AboutModal;

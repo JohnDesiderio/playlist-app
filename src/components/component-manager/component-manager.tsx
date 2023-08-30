@@ -23,6 +23,8 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             .then(res => {
                 if (res === 0) {
                     handleEmptyModalOpen();
+                } else {
+                    
                 }
             })
             .catch(e => {console.log(e)});

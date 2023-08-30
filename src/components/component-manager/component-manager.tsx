@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Grid, GridProps, Typography, Button, Modal } from '@mui/material';
 import { headerTextStyles, buttonStyles, headerGridStyles } from './component-manager-styles';
 import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
-import { getAllDocuments } from './business-logic/appRequest';
+import { getAllDocuments, redirectToAuthCodeFlow, getAccessToken } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
+
+//Bear in mind the implementation using PKCE Authorization pattern for improved security.
+// Other option is the implicit grant flow
+const client_id = "9dc3cfe6f686431f878571165c601f37"
 
 const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [buttonPress, setButtonPress] = useState<number>(0);
@@ -18,13 +22,22 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const handleAboutModalClose = () => setAboutModal(false);
 
     useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code')
+        if (code) {
+            getAccessToken(client_id, code)
+            .then((res) => {console.log(res)});
+        }
+    }, [])
+
+    useEffect(() => {
         if (buttonPress !== 0) {
             getAllDocuments()
             .then(res => {
                 if (res === 0) {
                     handleEmptyModalOpen();
                 } else {
-                    
+                    redirectToAuthCodeFlow(client_id);   
                 }
             })
             .catch(e => {console.log(e)});

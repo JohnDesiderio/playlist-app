@@ -1,5 +1,10 @@
 import { getDocs } from 'firebase/firestore';
 import { tracksCol } from '../../../composables/useDb';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { IUserProfile, ICreatePlaylist, IAddTracksToPlaylist } from './ISpotifyRequestTypes';
+import { generate } from 'random-words';
+
+const REDIRECT_URI = 'http://localhost:5173/playlist-app/'
 
 export const getAllDocuments = async () => {
     return (await getDocs(tracksCol)).size;
@@ -14,7 +19,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", 'https://johndesiderio.github.io/playlist-app/');
+    params.append("redirect_uri", REDIRECT_URI);
     params.append("scope", "playlist-modify-private playlist-modify-public user-read-private user-read-email")
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -29,7 +34,7 @@ export async function getAccessToken(clientId: string, code: string) {
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", 'https://johndesiderio.github.io/playlist-app/');
+    params.append("redirect_uri", REDIRECT_URI);
     params.append("code_verifier", verifier!);
 
 
@@ -63,8 +68,45 @@ async function generateCodeChallenge(codeVerifier: string) {
     .replace(/=+$/, '');
 }
 
-/*
-const buildThePlaylist = async() => {
-
+export const getUserProfile = async (access_token: string):Promise<AxiosResponse<IUserProfile> | undefined> => {
+    const config:AxiosRequestConfig = {
+        method: 'GET',
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        }
+    }
+    try {
+        return await axios.request(config);
+    } catch (e) {
+        console.log(e);
+    }
 }
-*/
+
+export const createThePlaylist = async (
+        access_token:string, 
+        userId: string,
+        userProfile: string,    
+    ):Promise<AxiosResponse<ICreatePlaylist> | undefined> => {
+        const playlistName = generate({ exactly: 3, join: ' ',  minLength: 5, maxLength: 10});
+
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${access_token}`
+            },
+            data: {
+                "name": playlistName,
+                "description": `A playlist belonging to ${userProfile} containing all the songs submitted to johndesiderio.github.io/playlist-app/ Thanks for mixing the songs, hope you enjoy it.`,
+                "public": "true",
+            }
+        };
+
+        try {
+            return await axios.request(config);
+        } catch (e) {
+           console.log(e);
+        }   
+}

@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Grid, GridProps, Typography, Button, Modal } from '@mui/material';
 import { headerTextStyles, buttonStyles, headerGridStyles } from './component-manager-styles';
 import TextfieldSearchGrid from '../textfield-search/textfield-search-grid';
-import { getAllDocuments, redirectToAuthCodeFlow, getAccessToken } from './business-logic/appRequest';
+import { 
+    getAllDocuments, 
+    redirectToAuthCodeFlow, 
+    getAccessToken, 
+    getUserProfile, 
+    createThePlaylist,
+} from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
 
@@ -14,6 +20,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [buttonPress, setButtonPress] = useState<number>(0);
     const [emptyModal, setEmptyModal] = useState<boolean>(false);
     const [aboutModal, setAboutModal] = useState<boolean>(false);
+    const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
+    const [displayName, setDisplayName] = useState<string | undefined>(undefined);
+    const [userId, setUserId] = useState<string | undefined>(undefined);
 
     const handleEmptyModalOpen = () => setEmptyModal(true);
     const handleEmptyModalClose = () => setEmptyModal(false);
@@ -21,15 +30,39 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const handleAboutModalOpen = () => setAboutModal(true);
     const handleAboutModalClose = () => setAboutModal(false);
 
+    //Avoid nesting too many async functions
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code')
         if (code) {
             getAccessToken(client_id, code)
-            .then((res) => {console.log(res)});
+            .then((res) => {
+                setAccessToken(res);
+                getUserProfile(res)
+                .then(res => {
+                    if (res?.data !== null) {
+                        setDisplayName(res?.data.display_name);
+                        setUserId(res?.data.id);
+                    }
+                })
+                .catch(e => { console.log(e) })
+            });
         }
     }, [])
 
+    useEffect(() => {
+        if (displayName !== undefined && userId !== undefined && accessToken !== undefined) {
+            createThePlaylist(accessToken, userId, displayName)
+            .then((res) => {
+                console.log(res?.status);
+                console.log(res?.data.id);
+            }).catch(e => {
+                console.log(e);
+            })
+        }
+    }, [displayName, userId])
+
+    // Mange flow to spotify authorization website
     useEffect(() => {
         if (buttonPress !== 0) {
             getAllDocuments()

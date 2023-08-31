@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, GridProps, Typography, Box } from '@mui/material';
 import SpotifyLogo from '../../assets/SpotifyLogo.svg'
-import { spotifyLogoContainerStyles, spotifyLogoBox, typographyStyles } from './spotify-logo-styles';
+import { spotifyLogoContainerStyles, typographyStyles } from './spotify-logo-styles';
 
 const SpotifyLogoCreds:React.FC<GridProps> = (props: GridProps) => {
     return (
@@ -16,9 +16,7 @@ const SpotifyLogoCreds:React.FC<GridProps> = (props: GridProps) => {
                 <Typography sx={typographyStyles}>
                     Powered by Spotify
                 </Typography>
-                <Box
-                    sx={spotifyLogoBox}
-                >
+                <Box>
                     <img
                         src={SpotifyLogo}
                     ></img>

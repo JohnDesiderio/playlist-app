@@ -6,8 +6,6 @@ export const spotifyLogoContainerStyles = {
     backgroundColor: theme.palette.primary.light,
 }
 
-export const spotifyLogoBox = {
-}
 
 export const typographyStyles = {
     marginTop: '15px',

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, GridProps, Typography, Button } from '@mui/material';
+import { Grid, GridProps, Typography, Button } from '@mui/material';
 import { gridModalStyles, typographyStyles, exitButtonStyles } from './modal-styles';
 import { IModal } from './IModalTypes';
 
@@ -32,12 +32,14 @@ const AboutModal:React.FC<AboutModalProps> = (props: AboutModalProps) => {
                     <br/>into a playlist that belongs to you and only you 💋🇬🇮🆙
                     </Typography>
                 </Grid>
-                <Button
-                    onClick={props.exitFunction}
-                    sx={exitButtonStyles}
-                >
-                    Exit
-                </Button>
+                <Grid item>
+                    <Button
+                        onClick={props.exitFunction}
+                        sx={exitButtonStyles}
+                    >
+                        Exit
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     )

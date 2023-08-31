@@ -13,6 +13,8 @@ import {
 } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
+import ResetSiteModal from '../modals/modal-reset-site';
+import SpotifyLogoCreds from '../spotify-creds/spotify-logo';
 
 //Bear in mind the implementation using PKCE Authorization pattern for improved security.
 // Other option is the implicit grant flow
@@ -22,6 +24,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [buttonPress, setButtonPress] = useState<number>(0);
     const [emptyModal, setEmptyModal] = useState<boolean>(false);
     const [aboutModal, setAboutModal] = useState<boolean>(false);
+    const [resetModal, setResetModal] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
     const [displayName, setDisplayName] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | undefined>(undefined);
@@ -72,7 +75,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
                             });
                         });
                     });
-                    //open another modal that resets the web page
+                    setResetModal(true)
                 }
             }).catch(e => {
                 console.log(e);
@@ -101,8 +104,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
                 <Typography
                     sx={headerTextStyles}
                 >
-                    Global Playlist Mixer
+                    Playlist Mixer for Friends
                 </Typography>
+                <SpotifyLogoCreds/>
             </Grid>
             <Grid
                 container
@@ -133,6 +137,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             </Modal>
             <Modal open={aboutModal} onClose={handleAboutModalClose}>
                 <AboutModal exitFunction={handleAboutModalClose}/>
+            </Modal>
+            <Modal open={resetModal}>
+                <ResetSiteModal/>
             </Modal>
         </Grid>
     )

@@ -56,8 +56,7 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
             container 
             alignItems='center' 
             justifyContent='center' 
-            direction='column'
-            sx={{marginTop: '2vh'}}
+            direction='row'
         >
             <SearchTextField
                 handleDisable={textfieldCallback}

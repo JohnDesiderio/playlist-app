@@ -20,6 +20,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
         } else {
             setDisableSubmit(false);
         }
+        console.log(itemsSize);
     }, [itemsSize])
 
     useEffect(() => {
@@ -33,6 +34,22 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
     }, [submitClicked])
 
 
+    const updateMappedItems = (item: ITrack) => {
+        if (mappedItems.has(item.id)) {
+            mappedItems.delete(item.id);
+        } else {
+            const temp: ITrack = {
+                song: item.song,
+                album: item.album,
+                id: item.id,
+                artist: item.artist,
+                uri: item.uri,
+            }
+            mappedItems.set(item.id, temp);
+        }
+        setItemsSize(mappedItems.size);
+    }
+
     if (props.response !== undefined) {
         return (
             <Grid container justifyContent='center' alignItems='center' direction='column'>
@@ -45,26 +62,13 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                         {props.response.tracks.items.map(item =>
                             <>
                                 <ResultGridItem
-                                    onClick={() => {
-                                        if (mappedItems.has(item.id)) {
-                                            mappedItems.delete(item.id);
-                                        } else {
-                                            const temp: ITrack = {
-                                                song: item.name,
-                                                album: item.album.name,
-                                                id: item.id,
-                                                artist: item.album.artists.at(0)?.name,
-                                                uri: item.uri,
-                                            }
-                                            mappedItems.set(item.id, temp);
-                                        }
-                                        setItemsSize(mappedItems.size);
-                                    }}
+                                    updateMap={updateMappedItems}
                                     song={item.name}
                                     album={item.album.name}
                                     id={item.id}
                                     artist={item.album.artists.at(0)?.name}
                                     image={item.album.images.at(2)?.url}
+                                    uri={item.uri}
                                 />
                             </>
                         )}

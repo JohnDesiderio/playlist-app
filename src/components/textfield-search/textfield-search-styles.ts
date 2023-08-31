@@ -4,8 +4,8 @@ export const searchButtonStyles = {
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.primary.main,
     width: '90px',
-    height: '60px',
-    margin: '1vw',
+    height: '56px',
+    marginLeft: '10px ',
     '&.Mui-disabled': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.light,
@@ -14,6 +14,7 @@ export const searchButtonStyles = {
 
 export const searchTextFieldStyles = {
     width: '200px',
+    marginTop: '23px',
     "& .MuiOutlinedInput-root.Mui-focused": {
         "& > fieldset": {
           borderColor: theme.palette.secondary.main,

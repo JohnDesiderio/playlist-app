@@ -14,3 +14,13 @@ export interface IRGProps {
     resetResponse: () => void,
     openThankYou: () => void,
 }
+
+export interface IResultGridItem {
+    updateMap: (item: ITrack) => void,
+    song: string
+    album: string,
+    artist: string | undefined,
+    image?: string | undefined,
+    id: string,
+    uri: string,
+}

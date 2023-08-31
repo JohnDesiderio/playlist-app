@@ -27,20 +27,28 @@ export const sendResultsStyles = {
 export const paperStyles = {
     marginTop: '5px',
     width: '300px',
-    ':hover': {
-        cursor: 'pointer',
-    }
+
 }
 
 export const clickedPaperStyles = {
     marginTop: '5px',
     width: '300px',
     backgroundColor: '#d1d1d1',
-    ':hover': {
-        cursor: 'pointer',
-    }
+
 }
 
 export const typographyStyles = {
-    width: '236px',
+    width: '190px',
+    fontSize: '14px'
+}
+
+export const checkboxBoxStyles = {
+    width: '30px',
+    paddingTop: '10px',
+}
+
+export const checkboxStyles = {
+    '&.Mui-checked': {
+        color: theme.palette.secondary.dark,
+    }
 }

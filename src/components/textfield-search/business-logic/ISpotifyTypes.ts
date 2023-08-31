@@ -21,6 +21,7 @@ export interface ISpotifyTrack {
         uri: string,
     },
     name: string,
+    uri: string,
 }
 
 export interface ISpotifyResponse {

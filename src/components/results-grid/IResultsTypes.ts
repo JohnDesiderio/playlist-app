@@ -6,6 +6,7 @@ export interface ITrack {
     artist: string | undefined,
     image?: string | undefined,
     id: string,
+    uri: string,
 }
 
 export interface IRGProps {

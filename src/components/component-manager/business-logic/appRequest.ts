@@ -1,4 +1,4 @@
-import { getDocs } from 'firebase/firestore';
+import { doc, getDocs, deleteDoc, getFirestore } from 'firebase/firestore';
 import { tracksCol } from '../../../composables/useDb';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IUserProfile, ICreatePlaylist, IAddTracksToPlaylist } from './ISpotifyRequestTypes';
@@ -84,7 +84,7 @@ export const getUserProfile = async (access_token: string):Promise<AxiosResponse
 }
 
 export const createThePlaylist = async (
-        access_token:string, 
+        accessToken:string, 
         userId: string,
         userProfile: string,    
     ):Promise<AxiosResponse<ICreatePlaylist> | undefined> => {
@@ -95,7 +95,7 @@ export const createThePlaylist = async (
             url: `https://api.spotify.com/v1/users/${userId}/playlists`,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${access_token}`
+                "Authorization": `Bearer ${accessToken}`
             },
             data: {
                 "name": playlistName,
@@ -109,4 +109,47 @@ export const createThePlaylist = async (
         } catch (e) {
            console.log(e);
         }   
+}
+
+export const addTracksToPlaylist = async (
+    accessToken: string,
+    playlistId: string,
+    documentId: string,
+):Promise<AxiosResponse<IAddTracksToPlaylist> | undefined> => {
+
+
+    const config: AxiosRequestConfig = {
+        method: 'POST',
+        url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        data: {
+            "uris" : [documentId],
+            "position": 0
+        }
+    };
+
+    try {
+        return await axios.request(config);
+    } catch (e) {
+        console.log();
+    }
+}
+
+export const assembleDocIds = async ():Promise<Array<string>> => {
+    const tracks = await getDocs(tracksCol)
+    const trackIds = new Set<string>();
+
+    const db = getFirestore();
+    
+    tracks.forEach(document => {
+        trackIds.add(document.data().uri);
+        deleteDoc(doc(db, 'tracks', document.id));
+    });
+
+    console.log(trackIds);
+
+    return Array.from(trackIds);
 }

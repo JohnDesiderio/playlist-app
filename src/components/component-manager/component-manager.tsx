@@ -8,6 +8,8 @@ import {
     getAccessToken, 
     getUserProfile, 
     createThePlaylist,
+    addTracksToPlaylist,
+    assembleDocIds,
 } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
@@ -30,7 +32,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const handleAboutModalOpen = () => setAboutModal(true);
     const handleAboutModalClose = () => setAboutModal(false);
 
-    //Avoid nesting too many async functions
+    //Avoid nesting too many async functions cuz I need to be able to read it lmao
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code')
@@ -54,8 +56,24 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
         if (displayName !== undefined && userId !== undefined && accessToken !== undefined) {
             createThePlaylist(accessToken, userId, displayName)
             .then((res) => {
-                console.log(res?.status);
-                console.log(res?.data.id);
+                if (res?.data !== undefined) {
+                    const playlistId = res.data.id;
+                    console.log(`Access token: ${accessToken}`)
+                    console.log(`Playlist id: ${playlistId}`);
+                    assembleDocIds()
+                    .then(documentIds => {
+                        documentIds.forEach(item => {
+                            addTracksToPlaylist(accessToken, playlistId, item)
+                            .then(response => {
+                                console.log(response);
+                            })
+                            .catch(e => {
+                                console.log(e);
+                            });
+                        });
+                    });
+                    //open another modal that resets the web page
+                }
             }).catch(e => {
                 console.log(e);
             })

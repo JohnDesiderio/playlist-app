@@ -3,4 +3,5 @@ export interface track {
     album: string
     song: string,
     id: string,
+    uri: string,
 }

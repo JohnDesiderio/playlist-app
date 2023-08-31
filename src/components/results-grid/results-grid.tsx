@@ -54,6 +54,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                                                 album: item.album.name,
                                                 id: item.id,
                                                 artist: item.album.artists.at(0)?.name,
+                                                uri: item.uri,
                                             }
                                             mappedItems.set(item.id, temp);
                                         }

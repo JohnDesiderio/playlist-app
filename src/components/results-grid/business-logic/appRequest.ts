@@ -9,6 +9,7 @@ export const setNewSong = async (key: string, value: ITrack) => {
       artist: value.artist,
       album: value.album,
       id: value.id,
+      uri: value.uri,
     });
 }
 

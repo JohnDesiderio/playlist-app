@@ -20,15 +20,10 @@ const ResetSiteModal:React.FC<GridProps> = (props: GridProps) => {
                 <Grid item>
                     <Typography sx={typographyStyles}>
                         Hmmm, I think you should check your spotify 🤩🥸🤓
-                        <br/>
                         If the playlist isn't there, send me an email
-                        <br/>
                         @ johnfrancisdesiderio2@gmail.com, and let me
-                        <br/>
                         know that you had a problem. Keep in mind, there
-                        <br/>
                         is no money to maintain the cloud and it might've
-                        <br/>
                         used all the free allowed for today.
                     </Typography>
                 </Grid>

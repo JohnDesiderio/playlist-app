@@ -61,7 +61,8 @@ const ResultGridItem:React.FC<ResultGridItemProps> = (props: ResultGridItemProps
                         </Typography>
                         <Typography 
                             sx={typographyStyles}
-                            noWrap                            >
+                            noWrap                            
+                        >
                             {props.artist}
                         </Typography>
                         <Typography 

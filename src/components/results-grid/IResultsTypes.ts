@@ -24,4 +24,5 @@ export interface IResultGridItem {
     image?: string | undefined,
     id: string,
     uri: string,
+    redirect_url: string,
 }

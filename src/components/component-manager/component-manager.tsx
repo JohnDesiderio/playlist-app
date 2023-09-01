@@ -61,8 +61,6 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             .then((res) => {
                 if (res?.data !== undefined) {
                     const playlistId = res.data.id;
-                    console.log(`Access token: ${accessToken}`)
-                    console.log(`Playlist id: ${playlistId}`);
                     assembleDocIds()
                     .then(documentIds => {
                         documentIds.forEach(item => {

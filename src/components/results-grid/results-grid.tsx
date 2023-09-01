@@ -68,6 +68,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                                     artist={item.album.artists.at(0)?.name}
                                     image={item.album.images.at(2)?.url}
                                     uri={item.uri}
+                                    redirect_url={item.external_urls.spotify}
                                 />
                             </>
                         )}

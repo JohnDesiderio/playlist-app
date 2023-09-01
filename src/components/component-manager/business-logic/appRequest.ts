@@ -5,7 +5,6 @@ import { IUserProfile, ICreatePlaylist, IAddTracksToPlaylist } from './ISpotifyR
 import { generate } from 'random-words';
 
 const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
-//const REDIRECT_URI = 'http://localhost:5173/playlist-app/'
 
 export const getAllDocuments = async () => {
     return (await getDocs(tracksCol)).size;

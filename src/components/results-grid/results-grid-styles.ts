@@ -10,6 +10,9 @@ export const parentResultsGridStyles = {
 export const cardResultsGridStyles = {
     width: '64px',
     height: '64px',
+    ':hover': {
+        cursor: 'pointer',
+    }
 }
 
 export const sendResultsStyles = {
@@ -50,5 +53,12 @@ export const checkboxBoxStyles = {
 export const checkboxStyles = {
     '&.Mui-checked': {
         color: theme.palette.secondary.dark,
+    }
+}
+
+export const redirectUrlBox = {
+    paddingLeft: '2px',
+    ':hover': {
+        cursor: 'pointer',
     }
 }

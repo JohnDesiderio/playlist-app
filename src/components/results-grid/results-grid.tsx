@@ -20,7 +20,6 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
         } else {
             setDisableSubmit(false);
         }
-        console.log(itemsSize);
     }, [itemsSize])
 
     useEffect(() => {

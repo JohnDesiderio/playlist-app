@@ -29,39 +29,46 @@ const ResultGridItem:React.FC<ResultGridItemProps> = (props: ResultGridItemProps
                 
             >
                 <Grid container direction='row'>
-                    <Card sx={cardResultsGridStyles}>
-                        <img
-                            src={props.image}
-                        >
-                        </img>
-                    </Card>
-                    <Box
-                        sx={{
-                            paddingLeft: '2px'
-                        }}  
+                    <Grid 
+                        onClick={() => {
+                            console.log();
+                        }}                
+                        item
                     >
-                        <Typography 
-                            sx={typographyStyles}
-                            noWrap
+                        <Card sx={cardResultsGridStyles}>
+                            <img
+                                src={props.image}
+                            >
+                            </img>
+                        </Card>
+                        <Box
+                            sx={{
+                                paddingLeft: '2px'
+                            }}  
                         >
-                            {props.song}
-                        </Typography>
-                        <Typography 
-                            sx={typographyStyles}
-                            noWrap
-                        >
-                            {props.artist}
-                        </Typography>
-                        <Typography 
-                            sx={typographyStyles}
-                            noWrap
-                        >
-                            {props.album}
-                        </Typography>
-                      </Box>
-                      <Box
+                            <Typography 
+                                sx={typographyStyles}
+                                noWrap
+                            >
+                                {props.song}
+                            </Typography>
+                            <Typography 
+                                sx={typographyStyles}
+                                noWrap
+                            >
+                                {props.artist}
+                            </Typography>
+                            <Typography 
+                                sx={typographyStyles}
+                                noWrap
+                            >
+                                {props.album}
+                             </Typography>
+                        </Box>
+                    </Grid>
+                    <Box
                         sx={checkboxBoxStyles}
-                      >
+                    >
                         <Checkbox
                             sx={checkboxStyles}
                             onClick={() => {

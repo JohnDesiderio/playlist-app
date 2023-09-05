@@ -11,7 +11,7 @@ export const gridModalStyles = {
 }
 
 export const typographyStyles = {
-    fontSize: 'clamp(1rem, 5vw, 1rem)',
+    fontSize: '2.5vh',
     margin: '5vw',
 }
 

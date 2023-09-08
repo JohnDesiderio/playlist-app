@@ -172,8 +172,8 @@ export const buildThePlaylist = async(
                 console.log(error);
             })
         }
+        handleLoadingModal(false);
     }
 
-    handleLoadingModal(false);
     setResetModal();
 } 

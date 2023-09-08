@@ -153,3 +153,27 @@ export const assembleDocIds = async ():Promise<Array<string>> => {
 
     return Array.from(trackIds);
 }
+
+export const buildThePlaylist = async(
+    accessToken: string,
+    userId: string,
+    displayName: string,
+    setResetModal: () => void,
+    handleLoadingModal: (val: boolean) => void,
+):Promise<void> => {
+    const playlistId = (await createThePlaylist(accessToken, userId, displayName))?.data.id; 
+    const docIds = await assembleDocIds();
+
+    if (playlistId !== undefined) {
+        handleLoadingModal(true);
+        for await (const document of docIds) {
+            await addTracksToPlaylist(accessToken, playlistId, document)
+            .catch(error => {
+                console.log(error);
+            })
+        }
+    }
+
+    handleLoadingModal(false);
+    setResetModal();
+} 

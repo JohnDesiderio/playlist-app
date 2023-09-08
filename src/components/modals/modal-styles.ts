@@ -22,3 +22,7 @@ export const exitButtonStyles = {
     height: '60px',
     margin: '1vw',
 }
+
+export const circularProgress = {
+    color: theme.palette.secondary.main,   
+}

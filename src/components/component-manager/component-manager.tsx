@@ -6,14 +6,13 @@ import {
     getAllDocuments, 
     redirectToAuthCodeFlow, 
     getAccessToken, 
-    getUserProfile, 
-    createThePlaylist,
-    addTracksToPlaylist,
-    assembleDocIds,
+    getUserProfile,
+    buildThePlaylist,
 } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
 import ResetSiteModal from '../modals/modal-reset-site';
+import LoadingModal from '../modals/modal-loading';
 import SpotifyLogoCreds from '../spotify-creds/spotify-logo';
 
 //Bear in mind the implementation using PKCE Authorization pattern for improved security.
@@ -25,6 +24,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [emptyModal, setEmptyModal] = useState<boolean>(false);
     const [aboutModal, setAboutModal] = useState<boolean>(false);
     const [resetModal, setResetModal] = useState<boolean>(false);
+    const [loadingModal, setLoadingModal] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
     const [displayName, setDisplayName] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | undefined>(undefined);
@@ -34,6 +34,10 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     const handleAboutModalOpen = () => setAboutModal(true);
     const handleAboutModalClose = () => setAboutModal(false);
+
+    const handleResetModalOpen = () => setResetModal(true);
+
+    const handleLoadingModal = (open: boolean) => setLoadingModal(open);
 
     //Avoid nesting too many async functions cuz I need to be able to read it lmao
     useEffect(() => {
@@ -57,27 +61,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     useEffect(() => {
         if (displayName !== undefined && userId !== undefined && accessToken !== undefined) {
-            createThePlaylist(accessToken, userId, displayName)
-            .then((res) => {
-                if (res?.data !== undefined) {
-                    const playlistId = res.data.id;
-                    assembleDocIds()
-                    .then(documentIds => {
-                        documentIds.forEach(item => {
-                            addTracksToPlaylist(accessToken, playlistId, item)
-                            .then(response => {
-                                console.log(response);
-                            })
-                            .catch(e => {
-                                console.log(e);
-                            });
-                        });
-                    });
-                    setResetModal(true)
-                }
-            }).catch(e => {
-                console.log(e);
-            })
+            buildThePlaylist(accessToken, userId, displayName, handleResetModalOpen, handleLoadingModal);
         }
     }, [displayName, userId])
 
@@ -138,6 +122,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             </Modal>
             <Modal open={resetModal}>
                 <ResetSiteModal/>
+            </Modal>
+            <Modal open={loadingModal}>
+                <LoadingModal/>
             </Modal>
         </Grid>
     )

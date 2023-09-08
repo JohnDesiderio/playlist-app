@@ -24,7 +24,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
 
     useEffect(() => {
         if (submitClicked !== 0) {
-            addSelectedSongs(mappedItems);
+            addSelectedSongs(mappedItems, props.accessToken);
             mappedItems.clear();
             setItemsSize(0);
             props.openThankYou();

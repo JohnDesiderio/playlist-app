@@ -1,7 +1,7 @@
+import { ISpotifyDanceability } from "../components/results-grid/IResultsTypes"
+
 export interface track {
-    artist: string,
-    album: string
-    song: string,
     id: string,
     uri: string,
+    metrics: ISpotifyDanceability,
 }

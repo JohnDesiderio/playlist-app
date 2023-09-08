@@ -7,13 +7,14 @@ export interface ITrack {
     image?: string | undefined,
     id: string,
     uri: string,
-
+    metrics?: ISpotifyDanceability,
 }
 
 export interface IRGProps {
     response: ISpotifyResponse | undefined,
     resetResponse: () => void,
     openThankYou: () => void,
+    accessToken: string,
 }
 
 export interface IResultGridItem {
@@ -26,3 +27,24 @@ export interface IResultGridItem {
     uri: string,
     redirect_url: string,
 }
+
+export interface ISpotifyDanceability {
+    acousticness: number,
+    analysis_url: string,
+    danceability: number,
+    duration_ms: number,
+    energy: number,
+    id: string,
+    instrumentalness: number,
+    key: number,
+    liveness: number,
+    loudness: number,
+    mode: number,
+    speechiness: number,
+    tempo: number,
+    time_signature: number,
+    track_href: string,
+    type: string,
+    uri: string,
+    valence: number,
+} 

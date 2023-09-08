@@ -69,6 +69,7 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
                 response={response}
                 resetResponse={resetSearchBar}
                 openThankYou={setThankYouOpen}
+                accessToken={accessToken}
             />
             <Modal open={thankYou} onClose={() => setThankYou(false)}>
                 <ThankYouModal exitFunction={setThankYouClose}/>

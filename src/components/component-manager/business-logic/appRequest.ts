@@ -149,8 +149,6 @@ export const assembleDocIds = async ():Promise<Array<string>> => {
         deleteDoc(doc(db, 'tracks', document.id));
     });
 
-    console.log(trackIds);
-
     return Array.from(trackIds);
 }
 

@@ -198,8 +198,8 @@ export const buildThePlaylist = async(
 } 
 
 const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
-    const u_b = percentile(75, arr);
-    const l_b = percentile(25, arr);
+    const u_b = percentile(60, arr);
+    const l_b = percentile(40, arr);
 
 
     const outliers: IOutlierDetection = {

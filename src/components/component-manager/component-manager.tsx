@@ -86,7 +86,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
                 <Typography
                     sx={headerTextStyles}
                 >
-                    Playlist Mixer for Friends
+                    Vibe Curator for Playlists
                 </Typography>
                 <SpotifyLogoCreds/>
             </Grid>

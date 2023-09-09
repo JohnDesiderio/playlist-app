@@ -40,3 +40,8 @@ export interface ICreatePlaylist {
 export interface IAddTracksToPlaylist {
     snapshot_id: string,
 }
+
+export interface IOutlierDetection {
+    lower_bound: number | number[],
+    upper_bound: number | number[],
+}

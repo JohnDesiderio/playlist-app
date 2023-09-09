@@ -1,8 +1,15 @@
 import { doc, getDocs, deleteDoc, getFirestore } from 'firebase/firestore';
 import { tracksCol } from '../../../composables/useDb';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { IUserProfile, ICreatePlaylist, IAddTracksToPlaylist } from './ISpotifyRequestTypes';
+import { 
+    IUserProfile, 
+    ICreatePlaylist, 
+    IAddTracksToPlaylist, 
+    IOutlierDetection 
+} from './ISpotifyRequestTypes';
 import { generate } from 'random-words';
+import { track } from '../../../composables/ITrack';
+import percentile from 'percentile';
 
 const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
 
@@ -138,18 +145,18 @@ export const addTracksToPlaylist = async (
     }
 }
 
-export const assembleDocIds = async ():Promise<Array<string>> => {
+export const assembleDocIds = async ():Promise<Set<track>> => {
     const tracks = await getDocs(tracksCol)
-    const trackIds = new Set<string>();
+    const trackIds = new Set<track>();
 
     const db = getFirestore();
     
     tracks.forEach(document => {
-        trackIds.add(document.data().uri);
+        trackIds.add(document.data());
         deleteDoc(doc(db, 'tracks', document.id));
     });
 
-    return Array.from(trackIds);
+    return trackIds;
 }
 
 export const buildThePlaylist = async(
@@ -162,16 +169,45 @@ export const buildThePlaylist = async(
     const playlistId = (await createThePlaylist(accessToken, userId, displayName))?.data.id; 
     const docIds = await assembleDocIds();
 
+
     if (playlistId !== undefined) {
         handleLoadingModal(true);
+
+        const vals = new Set<number>();
+
+        docIds.forEach(item => {
+            vals.add(item.metrics.danceability);
+        })
+
+        const bounds = findOutlierBoundaries(Array.from(vals.values()));
+
         for await (const document of docIds) {
-            await addTracksToPlaylist(accessToken, playlistId, document)
-            .catch(error => {
-                console.log(error);
-            })
+            const dance = document.metrics.danceability;
+            if (typeof bounds.upper_bound === 'number' && typeof bounds.lower_bound === 'number') {
+                console.log('Got here lets goo');
+
+                if (dance < bounds.upper_bound && dance > bounds.lower_bound)  
+                    await addTracksToPlaylist(accessToken, playlistId, document.uri)
+                        .catch(error => {
+                            console.log(error);
+                        });
+            } 
         }
         handleLoadingModal(false);
     }
 
     setResetModal();
 } 
+
+const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
+    const u_b = percentile(75, arr);
+    const l_b = percentile(25, arr);
+
+
+    const outliers: IOutlierDetection = {
+        upper_bound: u_b,
+        lower_bound: l_b,
+    };
+
+    return outliers;
+}

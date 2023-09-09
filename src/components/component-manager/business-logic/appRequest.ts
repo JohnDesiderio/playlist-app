@@ -184,8 +184,6 @@ export const buildThePlaylist = async(
         for await (const document of docIds) {
             const dance = document.metrics.danceability;
             if (typeof bounds.upper_bound === 'number' && typeof bounds.lower_bound === 'number') {
-                console.log('Got here lets goo');
-
                 if (dance < bounds.upper_bound && dance > bounds.lower_bound)  
                     await addTracksToPlaylist(accessToken, playlistId, document.uri)
                         .catch(error => {

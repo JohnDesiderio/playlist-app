@@ -3,7 +3,8 @@ import theme from '../theme/theme';
 export const headerTextStyles = {
     fontSize: 'clamp(1rem, 10vw, 2rem)',
     margin: '1vh',
-    marginTop: '2vh'
+    marginTop: '2vh',
+    color: theme.palette.secondary.dark,
 }
 
 export const buttonStyles = {

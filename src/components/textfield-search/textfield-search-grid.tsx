@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SearchTextField from './search-textfield';
 import { Grid, Modal } from '@mui/material';
 import SearchButton from './search-button';
-import { getAccessToken, getSearchResults } from './business-logic/appRequest';
+import { getAccessToken, getSearchResults, assembleMusic } from './business-logic/appRequest';
 import ResultsGrid from '../results-grid/results-grid';
 import { ISpotifyResponse } from './business-logic/ISpotifyTypes';
 import ThankYouModal from '../modals/modal-thank-you';
@@ -39,15 +39,13 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
 
     useEffect(() => {
         if (query !== '') {
-            getSearchResults(accessToken, query)
-            .then(res => {
-                if (res?.data !== undefined) {
-                    setResponse(res.data);
-                }
-            })
-            .catch(e => {
-                console.log(e);
-            })
+            const info = assembleMusic(accessToken, query);
+            info.then((obs) => {
+                obs.subscribe((track) => {
+                    console.log(track);
+                })
+            });
+            
         }
     }, [accessToken])
 

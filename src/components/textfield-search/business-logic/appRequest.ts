@@ -101,10 +101,10 @@ export const assembleMusic = async (
 
     const set = new Set<ITrack>();
     observable.subscribe({
-        next(x) {
+        next(x: ITrack) {
             set.add(x);
         },
-        error(err) {
+        error(err: any) {
             console.log(err);
             // Probably gonna want an error modal that says something went wrong lol
             setResponse(undefined);

@@ -1,7 +1,7 @@
 import theme from "../theme/theme";
 
 export const parentResultsGridStyles = {
-    width: '300px',
+    width: '320px',
     height: '40vh',
     marginTop: '2vh',
     overflowY: 'scroll',

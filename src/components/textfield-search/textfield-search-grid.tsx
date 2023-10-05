@@ -6,8 +6,9 @@ import { getAccessToken, assembleMusic } from './business-logic/appRequest';
 import ResultsGrid from '../results-grid/results-grid';
 import ThankYouModal from '../modals/modal-thank-you';
 import { ITrack } from '../results-grid/IResultsTypes';
+import { ITextfieldSearchGrid } from './ITextfieldProps';
 
-const TextfieldSearchGrid:React.FC<{}> = () => {
+const TextfieldSearchGrid:React.FC<ITextfieldSearchGrid> = (props: ITextfieldSearchGrid) => {
     const [disableSearch, setDisableSearch] = useState<boolean>(true);
     const [query, setQuery] = useState<string>('');
     const [accessToken, setAccessToken] = useState<string>('');
@@ -27,6 +28,10 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
         setResponse(undefined);
     }
 
+    const setNewDisplaySongs = (songs: Array<ITrack> | undefined) => {
+        setResponse(songs);
+    }
+
     useEffect(() => {
         getAccessToken()
         .then(res => {
@@ -39,9 +44,12 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
 
     useEffect(() => {
         if (query !== '') {
-            const set = new Set<ITrack>();
-            const info = assembleMusic(accessToken, query);
-
+            assembleMusic(
+                accessToken, 
+                query, 
+                props.executeLoadingModal,
+                setNewDisplaySongs,    
+            );
         }
     }, [accessToken])
 

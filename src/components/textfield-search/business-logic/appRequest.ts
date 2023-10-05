@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ISpotifyResponse, ISpotifyAccessToken } from './ISpotifyTypes';
 import { ISpotifyDanceability, ITrack } from '../../results-grid/IResultsTypes';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken> | undefined> => {
     const config:AxiosRequestConfig = {
@@ -64,9 +64,12 @@ export const findDanceability = async(
 export const assembleMusic = async (
     access_token: string, 
     query: string,
+    handleLoadingModal: (bool: boolean) => void,
+    setResponse: (songs: Array<ITrack> | undefined) => void,
 )/*:Promise<Observable<ITrack>>*/ => {
     const subject = new Subject<ITrack>();
     const observable = subject.asObservable();
+    handleLoadingModal(true);
 
     const observer = async () => {
         const spotifyResponse = await getSearchResults(access_token, query);
@@ -80,7 +83,7 @@ export const assembleMusic = async (
                         song: track.name,
                         album: track.album.name,
                         artist: track.album.artists.at(0)?.name,
-                        image: track.album.images.at(0)?.url,
+                        image: track.album.images.at(2)?.url,
                         id: track.id,
                         uri: track.uri,
                         metrics: songData.data,
@@ -96,18 +99,20 @@ export const assembleMusic = async (
 
     observer();
 
-
-
     const set = new Set<ITrack>();
     observable.subscribe({
         next(x) {
             set.add(x);
         },
         error(err) {
-            console.error(err);
+            console.log(err);
+            // Probably gonna want an error modal that says something went wrong lol
+            setResponse(undefined);
+            handleLoadingModal(false);
         }, 
         complete() {
-            console.log(Array.from(set.values()));
+            setResponse(Array.from(set.values()))
+            handleLoadingModal(false);
         }
     });
 }

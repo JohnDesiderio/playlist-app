@@ -15,8 +15,8 @@ import ResetSiteModal from '../modals/modal-reset-site';
 import LoadingModal from '../modals/modal-loading';
 import SpotifyLogoCreds from '../spotify-creds/spotify-logo';
 
-//Bear in mind the implementation using PKCE Authorization pattern for improved security.
-// Other option is the implicit grant flow
+// Bear in mind the implementation using PKCE Authorization pattern for improved security.
+// Other option is the implicit grant flow which is much weaker security lol.
 const client_id = "9dc3cfe6f686431f878571165c601f37"
 
 const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
@@ -112,7 +112,9 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
                 </Grid>
             </Grid>
             <Grid item>
-                <TextfieldSearchGrid/>
+                <TextfieldSearchGrid
+                    executeLoadingModal={handleLoadingModal}
+                />
             </Grid>
             <Modal open={emptyModal} onClose={handleEmptyModalClose}>
                 <EmptyModal exitFunction={handleEmptyModalClose}/>

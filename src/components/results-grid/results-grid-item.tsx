@@ -85,6 +85,8 @@ const ResultGridItem:React.FC<ResultGridItemProps> = (props: ResultGridItemProps
                                     artist: props.artist,
                                     uri: props.uri,
                                     id: props.id,
+                                    external_url: props.redirect_url,
+                                    metrics: props.metrics,
                                 }
                                 props.updateMap(item);
                             }}

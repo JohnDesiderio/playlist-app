@@ -37,14 +37,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
         if (mappedItems.has(item.id)) {
             mappedItems.delete(item.id);
         } else {
-            const temp: ITrack = {
-                song: item.song,
-                album: item.album,
-                id: item.id,
-                artist: item.artist,
-                uri: item.uri,
-            }
-            mappedItems.set(item.id, temp);
+            mappedItems.set(item.id, item);
         }
         setItemsSize(mappedItems.size);
     }
@@ -58,17 +51,18 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                     sx={parentResultsGridStyles}
                 >
                     <Grid {...props}>
-                        {props.response.tracks.items.map(item =>
+                        {props.response.map(item =>
                             <>
                                 <ResultGridItem
                                     updateMap={updateMappedItems}
-                                    song={item.name}
-                                    album={item.album.name}
+                                    song={item.song}
+                                    album={item.album}
                                     id={item.id}
-                                    artist={item.album.artists.at(0)?.name}
-                                    image={item.album.images.at(2)?.url}
+                                    artist={item.artist}
+                                    image={item.image}
                                     uri={item.uri}
-                                    redirect_url={item.external_urls.spotify}
+                                    redirect_url={item.external_url}
+                                    metrics={item.metrics}
                                 />
                             </>
                         )}

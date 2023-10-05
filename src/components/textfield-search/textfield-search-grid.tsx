@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import SearchTextField from './search-textfield';
 import { Grid, Modal } from '@mui/material';
 import SearchButton from './search-button';
-import { getAccessToken, getSearchResults, assembleMusic } from './business-logic/appRequest';
+import { getAccessToken, assembleMusic } from './business-logic/appRequest';
 import ResultsGrid from '../results-grid/results-grid';
-import { ISpotifyResponse } from './business-logic/ISpotifyTypes';
 import ThankYouModal from '../modals/modal-thank-you';
+import { ITrack } from '../results-grid/IResultsTypes';
 
 const TextfieldSearchGrid:React.FC<{}> = () => {
     const [disableSearch, setDisableSearch] = useState<boolean>(true);
     const [query, setQuery] = useState<string>('');
     const [accessToken, setAccessToken] = useState<string>('');
     const [buttonPress, setButtonPress] = useState<boolean>(false);
-    const [response, setResponse] = useState<ISpotifyResponse | undefined>();
+    const [response, setResponse] = useState<Array<ITrack> | undefined>();
     const [thankYou, setThankYou] = useState<boolean>(false);
 
     const setThankYouOpen = () => setThankYou(true);
@@ -39,13 +39,9 @@ const TextfieldSearchGrid:React.FC<{}> = () => {
 
     useEffect(() => {
         if (query !== '') {
+            const set = new Set<ITrack>();
             const info = assembleMusic(accessToken, query);
-            info.then((obs) => {
-                obs.subscribe((track) => {
-                    console.log(track);
-                })
-            });
-            
+
         }
     }, [accessToken])
 

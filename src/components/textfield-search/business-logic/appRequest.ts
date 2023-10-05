@@ -64,7 +64,7 @@ export const findDanceability = async(
 export const assembleMusic = async (
     access_token: string, 
     query: string,
-):Observable<ITrack> => {
+)/*:Promise<Observable<ITrack>>*/ => {
     const subject = new Subject<ITrack>();
     const observable = subject.asObservable();
 
@@ -84,14 +84,30 @@ export const assembleMusic = async (
                         id: track.id,
                         uri: track.uri,
                         metrics: songData.data,
+                        external_url: track.external_urls.spotify,
                     }
                     subject.next(moldedSong);
                 }
             }
+            subject.complete();
         }
 
     }
 
     observer();
-    return observable;
+
+
+
+    const set = new Set<ITrack>();
+    observable.subscribe({
+        next(x) {
+            set.add(x);
+        },
+        error(err) {
+            console.error(err);
+        }, 
+        complete() {
+            console.log(Array.from(set.values()));
+        }
+    });
 }

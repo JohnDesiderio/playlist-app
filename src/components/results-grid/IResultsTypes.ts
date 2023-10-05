@@ -8,10 +8,11 @@ export interface ITrack {
     id: string,
     uri: string,
     metrics?: ISpotifyDanceability,
+    external_url: string
 }
 
 export interface IRGProps {
-    response: ISpotifyResponse | undefined,
+    response: ITrack[]  | undefined,
     resetResponse: () => void,
     openThankYou: () => void,
     accessToken: string,
@@ -26,6 +27,7 @@ export interface IResultGridItem {
     id: string,
     uri: string,
     redirect_url: string,
+    metrics?: ISpotifyDanceability,
 }
 
 export interface ISpotifyDanceability {

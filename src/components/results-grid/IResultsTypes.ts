@@ -1,5 +1,3 @@
-import { ISpotifyResponse } from "../textfield-search/business-logic/ISpotifyTypes"
-
 export interface ITrack {
     song: string
     album: string,

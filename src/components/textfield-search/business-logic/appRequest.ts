@@ -38,20 +38,17 @@ export const getSearchResults = (
     return new Observable(observer => {
         axios.request(config)
         .then((r: AxiosResponse<ISpotifyResponse>) => {
-            return r.data;
-        })
-        .then((data) => {
-            data.tracks.items.forEach((track) => {
+            r.data.tracks.items.forEach((track) => {
                 observer.next(track);
             })
-            observer.complete();
+            observer.complete();;
         })
         .catch((e : any) => {
             observer.error(e);
         })
 
         return () => {
-            // clean up the unsubscribe method idk how yet
+
         }
     })
 }
@@ -71,9 +68,6 @@ export const findDanceability = (
     return new Observable<ITrack>(observer => {
         axios.request(config)
         .then((r: AxiosResponse<ISpotifyDanceability>) => {
-            return r.data;
-        })
-        .then((data) => {
             const moldedTrack: ITrack = {
                 song: track.name,
                 album: track.album.name,
@@ -82,7 +76,7 @@ export const findDanceability = (
                 id: track.id,
                 uri: track.uri,
                 external_url: track.external_urls.spotify,
-                metrics: data,
+                metrics: r.data,
             }
             observer.next(moldedTrack);
             observer.complete();
@@ -92,27 +86,25 @@ export const findDanceability = (
         });
 
         return () => {
-            // Clean up the unsubscribe somehow
+
         }
     })
 }
 
-export const assembleMusic = async (
+export const assembleMusic = (
     access_token: string, 
     query: string,
     handleLoadingModal: (bool: boolean) => void,
     setResponse: (songs: Array<ITrack> | undefined) => void,
 ) => {
-
-    const songs$: Observable<ISpotifyTrack> = getSearchResults(access_token, query);
-
     handleLoadingModal(true);
 
+    const songs$: Observable<ISpotifyTrack> = getSearchResults(access_token, query);
 
     const songResults = new Array<ITrack>();
 
     const newStateData$: Observable<ITrack> = songs$.pipe(
-        mergeMap(song => findDanceability(access_token, song))
+        mergeMap(song => findDanceability(access_token, song)),
     )
 
     newStateData$.subscribe({
@@ -127,6 +119,8 @@ export const assembleMusic = async (
         complete() {
             setResponse(songResults)
             handleLoadingModal(false);
-        }
-    });
+        },
+    })
+    
+    newStateData$.subscribe().unsubscribe();
 }

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ISpotifyResponse, ISpotifyAccessToken } from './ISpotifyTypes';
+import { ISpotifyResponse, ISpotifyAccessToken, ISpotifyTrack } from './ISpotifyTypes';
 import { ISpotifyDanceability, ITrack } from '../../results-grid/IResultsTypes';
-import { Subject } from 'rxjs';
+import { Observable, mergeMap } from 'rxjs';
 
 export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken> | undefined> => {
     const config:AxiosRequestConfig = {
@@ -24,41 +24,77 @@ export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken
     }
 }
 
-export const getSearchResults = async (
+export const getSearchResults = (
     accessToken: string,
     query: string,
-):Promise<AxiosResponse<ISpotifyResponse> | undefined> => {
+):Observable<ISpotifyTrack> => {
     const config: AxiosRequestConfig = {
         url: `https://api.spotify.com/v1/search?q=${query.replaceAll(/ +/g, '+')}&type=track&market=US&limit=10`,
         headers: {
             Authorization: `Bearer ${accessToken}`,
         }
     }
-    try {
-        return await axios.request(config)
-    } catch (e) {
-        console.log(e);
-        throw e;
-    }
+
+    return new Observable(observer => {
+        axios.request(config)
+        .then((r: AxiosResponse<ISpotifyResponse>) => {
+            return r.data;
+        })
+        .then((data) => {
+            data.tracks.items.forEach((track) => {
+                observer.next(track);
+            })
+            observer.complete();
+        })
+        .catch((e : any) => {
+            observer.error(e);
+        })
+
+        return () => {
+            // clean up the unsubscribe method idk how yet
+        }
+    })
 }
 
-export const findDanceability = async(
+export const findDanceability = (
     accessToken: string,
-    track_id: string,
-):Promise<AxiosResponse<ISpotifyDanceability> | undefined> => {
+    track: ISpotifyTrack,
+):Observable<ITrack> => {
     const config : AxiosRequestConfig = {
         method: 'GET',
-        url: `https://api.spotify.com/v1/audio-features/${track_id}`,
+        url: `https://api.spotify.com/v1/audio-features/${track.id}`,
         headers: {
             Authorization: `Bearer ${accessToken}`,
         }
     }
 
-    try {
-        return await axios.request(config);
-    } catch (e) {
-        console.log(e);
-    }
+    return new Observable<ITrack>(observer => {
+        axios.request(config)
+        .then((r: AxiosResponse<ISpotifyDanceability>) => {
+            return r.data;
+        })
+        .then((data) => {
+            const moldedTrack: ITrack = {
+                song: track.name,
+                album: track.album.name,
+                artist: track.album.artists.at(0)?.name,
+                image: track.album.images.at(2)?.url,
+                id: track.id,
+                uri: track.uri,
+                external_url: track.external_urls.spotify,
+                metrics: data,
+            }
+            observer.next(moldedTrack);
+            observer.complete();
+        })
+        .catch((e : any) => {
+            observer.error(e);
+        });
+
+        return () => {
+            // Clean up the unsubscribe somehow
+        }
+    })
 }
 
 export const assembleMusic = async (
@@ -66,52 +102,30 @@ export const assembleMusic = async (
     query: string,
     handleLoadingModal: (bool: boolean) => void,
     setResponse: (songs: Array<ITrack> | undefined) => void,
-)/*:Promise<Observable<ITrack>>*/ => {
-    const subject = new Subject<ITrack>();
-    const observable = subject.asObservable();
+) => {
+
+    const songs$: Observable<ISpotifyTrack> = getSearchResults(access_token, query);
+
     handleLoadingModal(true);
 
-    const observer = async () => {
-        const spotifyResponse = await getSearchResults(access_token, query);
 
-        if (spotifyResponse?.data.tracks.items != undefined) {
-            for await (const track of spotifyResponse.data.tracks.items) {
-                const songData = await findDanceability(access_token, track.id);
+    const songResults = new Array<ITrack>();
 
-                if (songData?.data !== undefined) {
-                    const moldedSong: ITrack = {
-                        song: track.name,
-                        album: track.album.name,
-                        artist: track.album.artists.at(0)?.name,
-                        image: track.album.images.at(2)?.url,
-                        id: track.id,
-                        uri: track.uri,
-                        metrics: songData.data,
-                        external_url: track.external_urls.spotify,
-                    }
-                    subject.next(moldedSong);
-                }
-            }
-            subject.complete();
-        }
+    const newStateData$: Observable<ITrack> = songs$.pipe(
+        mergeMap(song => findDanceability(access_token, song))
+    )
 
-    }
-
-    observer();
-
-    const set = new Set<ITrack>();
-    observable.subscribe({
+    newStateData$.subscribe({
         next(x: ITrack) {
-            set.add(x);
+            songResults.push(x);
         },
         error(err: any) {
-            console.log(err);
-            // Probably gonna want an error modal that says something went wrong lol
+            console.error(err);
             setResponse(undefined);
             handleLoadingModal(false);
         }, 
         complete() {
-            setResponse(Array.from(set.values()))
+            setResponse(songResults)
             handleLoadingModal(false);
         }
     });

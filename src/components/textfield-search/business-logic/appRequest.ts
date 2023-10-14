@@ -3,6 +3,12 @@ import { ISpotifyResponse, ISpotifyAccessToken, ISpotifyTrack } from './ISpotify
 import { ISpotifyDanceability, ITrack } from '../../results-grid/IResultsTypes';
 import { Observable, mergeMap } from 'rxjs';
 
+/**
+ * Simple authorization request to get permission to call 
+ * Spotify API to search for a track and retrieve 
+ * Spotify song analysis metrics
+ * @returns {Promise<AxiosResponse<ISpotifyResponse> | undefined>} - a response containing the Spotify Access Token
+ */
 export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken> | undefined> => {
     const config:AxiosRequestConfig = {
         method: 'post',
@@ -24,6 +30,12 @@ export const getAccessToken = async ():Promise<AxiosResponse<ISpotifyAccessToken
     }
 }
 
+/**
+ * The function creates an observable based on the results from the items array in the Spotify response
+ * @param {string} accessToken - The token obtained from the Promise in getAccessToken()
+ * @param {string} query - The user input from the textfield search component
+ * @returns {Observable<ISpotifyTrack>} An observable
+ */
 export const getSearchResults = (
     accessToken: string,
     query: string,
@@ -41,18 +53,25 @@ export const getSearchResults = (
             r.data.tracks.items.forEach((track) => {
                 observer.next(track);
             })
-            observer.complete();;
+            observer.complete();
         })
         .catch((e : any) => {
             observer.error(e);
         })
 
         return () => {
-
+            
         }
     })
 }
 
+/**
+ * Request the Spotify API for the metrics on specific tracks.
+ * @param {string} accessToken - The token obtained from the Promise in getAccessToken()
+ * @param {ISpotifyTrack} track - The track structure containing relevant artist metadata
+ * @returns {Observable<ITrack>} - An observable that contains the Axios Request for Spotify
+ * song analysis on the track variable
+ */
 export const findDanceability = (
     accessToken: string,
     track: ISpotifyTrack,
@@ -91,6 +110,15 @@ export const findDanceability = (
     })
 }
 
+/**
+ * A void function that invokes a pause modal that does not close
+ * until requests complete or an error happes within the code.
+ * TODO: Implement an error modal declaring something didn't work.
+ * @param {string} access_token - The token obtained from the Promise in getAccessToken()
+ * @param {string} query - The user input from the textfield search component
+ * @param {(bool: boolean) => void} handleLoadingModal - callback function to open and close the loading modal
+ * @param {(songs: Array<ITrack> | undefined) => void} setResponse - callback functions to set new state upon modal finish loading
+ */
 export const assembleMusic = (
     access_token: string, 
     query: string,

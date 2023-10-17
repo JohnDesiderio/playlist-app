@@ -42,6 +42,6 @@ export interface IAddTracksToPlaylist {
 }
 
 export interface IOutlierDetection {
-    lower_bound: number | number[],
-    upper_bound: number | number[],
+    lower_bound: number,
+    upper_bound: number,
 }

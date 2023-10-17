@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, GridProps, Typography, Button } from '@mui/material';
 import { gridModalStyles, typographyStyles, exitButtonStyles } from './modal-styles';
+import { REDIRECT_URI } from '../component-manager/business-logic/appRequest';
 
 const ResetSiteModal:React.FC<GridProps> = (props: GridProps) => {
     return (
@@ -29,7 +30,7 @@ const ResetSiteModal:React.FC<GridProps> = (props: GridProps) => {
                 </Grid>
                 <Button
                     onClick={() => {
-                        document.location = 'https://johndesiderio.github.io/playlist-app/'
+                        document.location = REDIRECT_URI
                     }}
                     sx={exitButtonStyles}
                 >

@@ -9,15 +9,16 @@ import {
 } from './ISpotifyRequestTypes';
 import { generate } from 'random-words';
 import { track } from '../../../composables/ITrack';
-import percentile from 'percentile';
+import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpotifyTypes';
 
-const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
+// Export const to make it easier for dev env
+export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
 
-export const getAllDocuments = async () => {
+export const getAllDocuments = async (): Promise<number> => {
     return (await getDocs(tracksCol)).size;
 }
 
-export async function redirectToAuthCodeFlow(clientId: string) {
+export const redirectToAuthCodeFlow = async (clientId: string):Promise<void> => {
     const verifier = generateRandomString(128);
     const challenge = await generateCodeChallenge(verifier);
 
@@ -34,28 +35,35 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     document.location = `https://accounts.spotify.com/authorize?${params.toString()}`
 }
 
-export async function getAccessToken(clientId: string, code: string) {
+export const getAccessToken = async (
+    clientId: string,
+    code: string,
+):Promise<AxiosResponse<ISpotifyAccessToken> | undefined> => {
     const verifier = localStorage.getItem("verifier");
+    
+    const config : AxiosRequestConfig = {
+        method: 'post',
+        url : 'https://accounts.spotify.com/api/token',
+        data: {
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: REDIRECT_URI,
+            code_verifier: verifier!,
+        },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    }
 
-    const params = new URLSearchParams();
-    params.append("client_id", clientId);
-    params.append("grant_type", "authorization_code");
-    params.append("code", code);
-    params.append("redirect_uri", REDIRECT_URI);
-    params.append("code_verifier", verifier!);
-
-
-    const result = await fetch("https://accounts.spotify.com/api/token", {
-        method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params,
-    });
-
-    const { access_token } = await result.json();
-    return access_token;
+    try {
+        return await axios.request(config);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
-function generateRandomString(length:number) {
+const generateRandomString = (length:number):string => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghhijklmopqrstuvwxyz1234567890';
 
@@ -65,8 +73,7 @@ function generateRandomString(length:number) {
 
     return text;
 }
-
-async function generateCodeChallenge(codeVerifier: string) {
+const generateCodeChallenge = async (codeVerifier: string):Promise<string> => {
     const data = new TextEncoder().encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
     return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
@@ -183,13 +190,12 @@ export const buildThePlaylist = async(
 
         for await (const document of docIds) {
             const dance = document.metrics.danceability;
-            if (typeof bounds.upper_bound === 'number' && typeof bounds.lower_bound === 'number') {
-                if (dance < bounds.upper_bound && dance > bounds.lower_bound)  
-                    await addTracksToPlaylist(accessToken, playlistId, document.uri)
+            if (dance < bounds.upper_bound && dance > bounds.lower_bound) {
+                await addTracksToPlaylist(accessToken, playlistId, document.uri)
                         .catch(error => {
                             console.log(error);
-                        });
-            } 
+                        });    
+            }
         }
         handleLoadingModal(false);
     }
@@ -198,13 +204,20 @@ export const buildThePlaylist = async(
 } 
 
 const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
-    const u_b = percentile(60, arr);
-    const l_b = percentile(40, arr);
+    const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
 
+    const std = Math.sqrt(
+        arr
+            .reduce((acc, val) =>  acc.concat((val - mean) ** 2), [] as number[])
+            .reduce((acc, val) => acc + val, 0) /
+            (arr.length)
+    )
+
+    const d_v = 1; // Stastical variation to control how the threshold for outliers
 
     const outliers: IOutlierDetection = {
-        upper_bound: u_b,
-        lower_bound: l_b,
+        upper_bound: mean + (d_v * std) > 1 ? 1 : mean + (d_v * std),
+        lower_bound: mean - (d_v * std) < 0 ? 0 : mean - (d_v * std),
     };
 
     return outliers;

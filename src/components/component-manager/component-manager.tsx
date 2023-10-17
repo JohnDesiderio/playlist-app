@@ -42,19 +42,21 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     //Avoid nesting too many async functions cuz I need to be able to read it lmao
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const code = params.get('code')
+        const code = params.get('code');
         if (code) {
             getAccessToken(client_id, code)
             .then((res) => {
-                setAccessToken(res);
-                getUserProfile(res)
-                .then(res => {
-                    if (res?.data !== null) {
-                        setDisplayName(res?.data.display_name);
-                        setUserId(res?.data.id);
-                    }
-                })
+                if (res?.data.access_token != undefined) {
+                    setAccessToken(res.data.access_token);
+                    getUserProfile(res.data.access_token)
+                    .then(response => {
+                        if (response?.data !== null) {
+                            setDisplayName(response?.data.display_name);
+                            setUserId(response?.data.id);
+                        }
+                    })
                 .catch(e => { console.log(e) })
+                }
             });
         }
     }, [])

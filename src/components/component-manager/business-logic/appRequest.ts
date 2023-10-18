@@ -10,7 +10,7 @@ import {
 import { generate } from 'random-words';
 import { track } from '../../../composables/ITrack';
 import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpotifyTypes';
-import { Observable, from } from 'rxjs';
+import { Observable, from, filter } from 'rxjs';
 
 // Export const to make it easier for dev env
 export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
@@ -191,20 +191,17 @@ export const buildThePlaylist = async(
         const playlistSongs$ : Observable<track> = from(docIds);
         const req_body = new Array<string>();
 
-        playlistSongs$.subscribe({
+        playlistSongs$
+        .pipe(filter(track => outlierDetection(track.metrics.danceability, bounds)))
+        .subscribe({
             next: (item) => {
-                const score = item.metrics.danceability;
 
                 if (req_body.length === 100) {
                     addTracksToPlaylist(accessToken, playlistId, req_body)
                     req_body.length = 0;
-
-                } else {
-                    if (score < bounds.upper_bound && score > bounds.lower_bound) {
-                        req_body.push(item.uri);
-                    }
                 }
-
+                
+                req_body.push(item.uri);
             },
             error: () => {},
             complete: () => {
@@ -238,4 +235,11 @@ const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
     };
 
     return outliers;
+}
+
+const outlierDetection = (
+    score: number,
+    bounds: IOutlierDetection,
+): boolean => {
+    return (score < bounds.upper_bound && score > bounds.lower_bound);
 }

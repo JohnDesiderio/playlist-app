@@ -8,6 +8,7 @@ import {
     IOutlierDetection 
 } from './ISpotifyRequestTypes';
 import { generate } from 'random-words';
+import translate from 'translate';
 import { track } from '../../../composables/ITrack';
 import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpotifyTypes';
 import { Observable, from, filter } from 'rxjs';
@@ -74,6 +75,7 @@ const generateRandomString = (length:number):string => {
 
     return text;
 }
+
 const generateCodeChallenge = async (codeVerifier: string):Promise<string> => {
     const data = new TextEncoder().encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
@@ -104,6 +106,7 @@ export const createThePlaylist = async (
         userProfile: string,    
     ):Promise<AxiosResponse<ICreatePlaylist> | undefined> => {
         const playlistName = generate({ exactly: 3, join: ' ',  minLength: 5, maxLength: 10});
+        const frenchPlaylistName = await translate(playlistName, {to: 'fr'});
 
         const config: AxiosRequestConfig = {
             method: 'POST',
@@ -113,7 +116,7 @@ export const createThePlaylist = async (
                 "Authorization": `Bearer ${accessToken}`
             },
             data: {
-                "name": playlistName,
+                "name": frenchPlaylistName,
                 "description": `A playlist belonging to ${userProfile} containing all the songs submitted to johndesiderio.github.io/playlist-app/ Thanks for mixing the songs, hope you enjoy it.`,
                 "public": "true",
             }
@@ -227,7 +230,7 @@ const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
             (arr.length)
     )
 
-    const d_v = 1; // Deviation setting to control how the threshold for outliers
+    const d_v = 1; // Deviation setting to control the threshold for outliers
 
     const outliers: IOutlierDetection = {
         upper_bound: mean + (d_v * std) > 1 ? 1 : mean + (d_v * std),

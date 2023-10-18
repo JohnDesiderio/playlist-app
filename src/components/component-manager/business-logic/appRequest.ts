@@ -10,6 +10,7 @@ import {
 import { generate } from 'random-words';
 import { track } from '../../../composables/ITrack';
 import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpotifyTypes';
+import { Observable, from } from 'rxjs';
 
 // Export const to make it easier for dev env
 export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
@@ -128,7 +129,7 @@ export const createThePlaylist = async (
 export const addTracksToPlaylist = async (
     accessToken: string,
     playlistId: string,
-    documentId: string,
+    documentId: Array<string>,
 ):Promise<AxiosResponse<IAddTracksToPlaylist> | undefined> => {
 
 
@@ -140,7 +141,7 @@ export const addTracksToPlaylist = async (
             'Content-Type': 'application/json',
         },
         data: {
-            "uris" : [documentId],
+            "uris" : documentId,
             "position": 0
         }
     };
@@ -152,14 +153,14 @@ export const addTracksToPlaylist = async (
     }
 }
 
-export const assembleDocIds = async ():Promise<Set<track>> => {
+export const assembleDocIds = async ():Promise<Array<track>> => {
     const tracks = await getDocs(tracksCol)
-    const trackIds = new Set<track>();
+    const trackIds = new Array<track>();
 
     const db = getFirestore();
     
     tracks.forEach(document => {
-        trackIds.add(document.data());
+        trackIds.push(document.data());
         deleteDoc(doc(db, 'tracks', document.id));
     });
 
@@ -176,28 +177,44 @@ export const buildThePlaylist = async(
     const playlistId = (await createThePlaylist(accessToken, userId, displayName))?.data.id; 
     const docIds = await assembleDocIds();
 
-
     if (playlistId !== undefined) {
-        handleLoadingModal(true);
+        handleLoadingModal(true);        
 
-        const vals = new Set<number>();
+        const vals = new Array<number>(); // danceability metrics used to calculate outlier boundaries
 
         docIds.forEach(item => {
-            vals.add(item.metrics.danceability);
+            vals.push(item.metrics.danceability);
         })
 
-        const bounds = findOutlierBoundaries(Array.from(vals.values()));
+        const bounds = findOutlierBoundaries(vals);
 
-        for await (const document of docIds) {
-            const dance = document.metrics.danceability;
-            if (dance < bounds.upper_bound && dance > bounds.lower_bound) {
-                await addTracksToPlaylist(accessToken, playlistId, document.uri)
-                        .catch(error => {
-                            console.log(error);
-                        });    
+        const playlistSongs$ : Observable<track> = from(docIds);
+        const req_body = new Array<string>();
+
+        playlistSongs$.subscribe({
+            next: (item) => {
+                const score = item.metrics.danceability;
+
+                if (req_body.length === 100) {
+                    addTracksToPlaylist(accessToken, playlistId, req_body)
+                    req_body.length = 0;
+
+                } else {
+                    if (score < bounds.upper_bound && score > bounds.lower_bound) {
+                        req_body.push(item.uri);
+                    }
+                }
+
+            },
+            error: () => {},
+            complete: () => {
+                addTracksToPlaylist(accessToken, playlistId, req_body);
+                handleLoadingModal(false); // The observable works quickly so the modal might not appear
             }
-        }
-        handleLoadingModal(false);
+        });
+
+        playlistSongs$.subscribe().unsubscribe();
+
     }
 
     setResetModal();
@@ -213,7 +230,7 @@ const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
             (arr.length)
     )
 
-    const d_v = 1; // Stastical variation to control how the threshold for outliers
+    const d_v = 1; // Deviation setting to control how the threshold for outliers
 
     const outliers: IOutlierDetection = {
         upper_bound: mean + (d_v * std) > 1 ? 1 : mean + (d_v * std),

@@ -164,7 +164,7 @@ export const assembleDocIds = async ():Promise<Array<track>> => {
     
     tracks.forEach(document => {
         trackIds.push(document.data());
-        //deleteDoc(doc(db, 'tracks', document.id));
+        deleteDoc(doc(db, 'tracks', document.id));
     });
 
     return trackIds;

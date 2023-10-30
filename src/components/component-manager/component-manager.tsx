@@ -7,12 +7,12 @@ import {
     redirectToAuthCodeFlow, 
     getAccessToken, 
     getUserProfile,
-    buildThePlaylist,
 } from './business-logic/appRequest';
 import EmptyModal from '../modals/modal-empty-col';
 import AboutModal from '../modals/modal-about';
 import ResetSiteModal from '../modals/modal-reset-site';
 import LoadingModal from '../modals/modal-loading';
+import ChoiceModal from '../modals/choice-modal/modal-choice';
 import SpotifyLogoCreds from '../spotify-creds/spotify-logo';
 
 // Bear in mind the implementation using PKCE Authorization pattern for improved security.
@@ -25,6 +25,7 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const [aboutModal, setAboutModal] = useState<boolean>(false);
     const [resetModal, setResetModal] = useState<boolean>(false);
     const [loadingModal, setLoadingModal] = useState<boolean>(false);
+    const [choiceModal, setChoiceModal] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
     const [displayName, setDisplayName] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | undefined>(undefined);
@@ -38,6 +39,8 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
     const handleResetModalOpen = () => setResetModal(true);
 
     const handleLoadingModal = (open: boolean) => setLoadingModal(open);
+
+    const handleChoiceModal = (open: boolean) => setChoiceModal(open);
 
     //Avoid nesting too many async functions cuz I need to be able to read it lmao
     useEffect(() => {
@@ -61,9 +64,10 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
         }
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {    
         if (displayName !== undefined && userId !== undefined && accessToken !== undefined) {
-            buildThePlaylist(accessToken, userId, displayName, handleResetModalOpen, handleLoadingModal);
+            //buildThePlaylist(accessToken, userId, displayName, handleResetModalOpen, handleLoadingModal);
+            handleChoiceModal(true);
         }
     }, [displayName, userId])
 
@@ -119,16 +123,26 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
                 />
             </Grid>
             <Modal open={emptyModal} onClose={handleEmptyModalClose}>
-                <EmptyModal exitFunction={handleEmptyModalClose}/>
+                <EmptyModal exit_function={handleEmptyModalClose}/>
             </Modal>
             <Modal open={aboutModal} onClose={handleAboutModalClose}>
-                <AboutModal exitFunction={handleAboutModalClose}/>
+                <AboutModal exit_function={handleAboutModalClose}/>
             </Modal>
             <Modal open={resetModal}>
                 <ResetSiteModal/>
             </Modal>
             <Modal open={loadingModal}>
                 <LoadingModal/>
+            </Modal>
+            <Modal open={choiceModal}>
+                <ChoiceModal 
+                    display_name={displayName}
+                    loading_modal={handleLoadingModal}
+                    exit_function={handleChoiceModal}
+                    access_token={accessToken}
+                    user_id={userId}
+                    handle_reset_modal={handleResetModalOpen}
+                />
             </Modal>
         </Grid>
     )

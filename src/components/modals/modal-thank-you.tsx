@@ -28,7 +28,9 @@ const ThankYouModal:React.FC<TYModalProps> = (props: TYModalProps) => {
                     </Typography>
                 </Grid>
                 <Button
-                    onClick={props.exitFunction}
+                    onClick={() => {
+                        props.exit_function();
+                    }}
                     sx={exitButtonStyles}
                 >
                     Exit

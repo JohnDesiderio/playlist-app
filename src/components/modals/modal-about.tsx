@@ -34,7 +34,7 @@ const AboutModal:React.FC<AboutModalProps> = (props: AboutModalProps) => {
                 </Grid>
                 <Grid item>
                     <Button
-                        onClick={props.exitFunction}
+                        onClick={props.exit_function}
                         sx={exitButtonStyles}
                     >
                         Exit

@@ -74,7 +74,7 @@ const TextfieldSearchGrid:React.FC<ITextfieldSearchGrid> = (props: ITextfieldSea
                 accessToken={accessToken}
             />
             <Modal open={thankYou} onClose={() => setThankYou(false)}>
-                <ThankYouModal exitFunction={setThankYouClose}/>
+                <ThankYouModal exit_function={setThankYouClose}/>
             </Modal>
         </Grid>
     );

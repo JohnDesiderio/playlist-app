@@ -14,7 +14,8 @@ import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpot
 import { Observable, from, filter } from 'rxjs';
 
 // Export const to make it easier for dev env
-export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/'
+//export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/';
+export const REDIRECT_URI = 'http://localhost:5173/playlist-app/'
 
 export const getAllDocuments = async (): Promise<number> => {
     return (await getDocs(tracksCol)).size;
@@ -164,7 +165,7 @@ export const assembleDocIds = async ():Promise<Array<track>> => {
     
     tracks.forEach(document => {
         trackIds.push(document.data());
-        deleteDoc(doc(db, 'tracks', document.id));
+        //deleteDoc(doc(db, 'tracks', document.id));
     });
 
     return trackIds;
@@ -209,18 +210,17 @@ export const buildThePlaylist = async(
             error: () => {},
             complete: () => {
                 addTracksToPlaylist(accessToken, playlistId, req_body);
-                handleLoadingModal(false); // The observable works quickly so the modal might not appear
             }
         });
 
         playlistSongs$.subscribe().unsubscribe();
-
+        handleLoadingModal(false);
     }
 
     setResetModal();
 } 
 
-const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
+export const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
     const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
 
     const std = Math.sqrt(
@@ -240,7 +240,8 @@ const findOutlierBoundaries = (arr: Array<number>):IOutlierDetection => {
     return outliers;
 }
 
-const outlierDetection = (
+//Use this for the rxjs filter possibility.
+export const outlierDetection = (
     score: number,
     bounds: IOutlierDetection,
 ): boolean => {

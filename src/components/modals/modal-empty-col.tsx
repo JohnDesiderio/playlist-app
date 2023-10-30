@@ -28,7 +28,7 @@ const EmptyModal:React.FC<EmptyModalProps> = (props: EmptyModalProps) => {
                     </Typography>
                 </Grid>
                 <Button
-                    onClick={props.exitFunction}
+                    onClick={props.exit_function}
                     sx={exitButtonStyles}
                 >
                     Exit

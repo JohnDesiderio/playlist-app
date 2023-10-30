@@ -1,3 +1,3 @@
 export interface IModal {
-    exitFunction: () => void,
+    exit_function: () => void,
 }

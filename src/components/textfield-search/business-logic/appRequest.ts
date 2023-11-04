@@ -127,15 +127,14 @@ export const assembleMusic = (
 ) => {
     handleLoadingModal(true);
 
-    const songs$: Observable<ISpotifyTrack> = getSearchResults(access_token, query);
-
     const songResults = new Array<ITrack>();
 
-    const newStateData$: Observable<ITrack> = songs$.pipe(
-        mergeMap(song => findDanceability(access_token, song)),
-    )
+    const songs$ = getSearchResults(access_token, query)
+    .pipe(
+        mergeMap(song => findDanceability(access_token, song))
+    );
 
-    newStateData$.subscribe({
+    songs$.subscribe({
         next(x: ITrack) {
             songResults.push(x);
         },
@@ -148,7 +147,7 @@ export const assembleMusic = (
             setResponse(songResults)
             handleLoadingModal(false);
         },
-    })
-    
-    newStateData$.subscribe().unsubscribe();
+    });
+
+    songs$.subscribe().unsubscribe();
 }

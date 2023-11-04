@@ -11,10 +11,10 @@ export const gridModalStyles = {
 }
 
 export const typographyStyles = {
-    width: '100vh',
     fontSize: '2.5vh',
     margin: '5vw',
     color: theme.palette.secondary.dark,
+    alignText: 'center',
 }
 
 export const exitButtonStyles = {

@@ -20,10 +20,8 @@ const LoadingModal:React.FC<GridProps> = (props: GridProps) => {
                 <Grid item>
                     <Typography sx={typographyStyles}>
                         Loading...
+                        <CircularProgress sx={circularProgress}/>
                     </Typography>
-                </Grid>   
-                <Grid item>
-                    <CircularProgress sx={circularProgress}/>
                 </Grid>
             </Grid>
         </Grid>

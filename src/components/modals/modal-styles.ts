@@ -11,6 +11,7 @@ export const gridModalStyles = {
 }
 
 export const typographyStyles = {
+    width: '100vw',
     fontSize: '2.5vh',
     margin: '5vw',
     color: theme.palette.secondary.dark,

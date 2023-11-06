@@ -17,10 +17,10 @@ const LoadingModal:React.FC<GridProps> = (props: GridProps) => {
                 direction='column'
                 sx={gridModalStyles}
             >
-                <Grid item>
+                <Grid item alignItems='center'>
                     <Typography sx={typographyStyles}>
-                        Loading...
-                        <CircularProgress sx={circularProgress}/>
+                        Loading... &ensp;
+                    <CircularProgress sx={circularProgress}/>
                     </Typography>
                 </Grid>
             </Grid>

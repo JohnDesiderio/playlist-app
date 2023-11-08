@@ -41,6 +41,7 @@ const ResultGridItem:React.FC<ResultGridItemProps> = (props: ResultGridItemProps
             >
                 <Grid container direction='row'>
                     <Card 
+                        data-testid='result-grid-card'
                         onClick={redirectToUrl}
                         sx={cardResultsGridStyles}
                     >
@@ -76,6 +77,7 @@ const ResultGridItem:React.FC<ResultGridItemProps> = (props: ResultGridItemProps
                         sx={checkboxBoxStyles}
                     >
                         <Checkbox
+                            data-testid='result-grid-checkbox'
                             sx={checkboxStyles}
                             onClick={() => {
                                 setStyleManager(!styleManager);

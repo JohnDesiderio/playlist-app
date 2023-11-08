@@ -29,6 +29,7 @@ const ResetSiteModal:React.FC<GridProps> = (props: GridProps) => {
                     </Typography>
                 </Grid>
                 <Button
+                    data-testid='button'
                     onClick={() => {
                         document.location = REDIRECT_URI
                     }}

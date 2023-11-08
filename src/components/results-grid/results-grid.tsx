@@ -54,6 +54,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                         {props.response.map(item =>
                             <>
                                 <ResultGridItem
+                                    data-testid='mock-grid-item'
                                     updateMap={updateMappedItems}
                                     song={item.song}
                                     album={item.album}
@@ -69,6 +70,7 @@ const ResultsGrid:React.FC<ResultsGridProps> = (props: ResultsGridProps) => {
                     </Grid>
                 </Grid>
                 <Button 
+                    data-testid='results-grid-button'
                     sx={sendResultsStyles}
                     disabled={disableSubmit}
                     onClick={() => {

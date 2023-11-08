@@ -28,6 +28,7 @@ const ThankYouModal:React.FC<TYModalProps> = (props: TYModalProps) => {
                     </Typography>
                 </Grid>
                 <Button
+                    data-testid='button'
                     onClick={() => {
                         props.exit_function();
                     }}

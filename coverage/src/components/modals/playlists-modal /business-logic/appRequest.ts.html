@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.94% </span>
+                <span class="strong">42.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/78</span>
+                <span class='fraction'>33/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.94% </span>
+                <span class="strong">42.3% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/78</span>
+                <span class='fraction'>33/78</span>
             </div>
         
             
@@ -152,27 +152,27 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -228,28 +228,28 @@ import { addTracksToPlaylist, assembleDocIds, outlierDetection, findOutlierBound
 import { Observable, from, filter } from "rxjs";
 import { track } from "../../../../composables/ITrack";
 &nbsp;
-export const gatherPlaylists = <span class="fstat-no" title="function not covered" >async (</span>
-<span class="cstat-no" title="statement not covered" >    access_token: string,</span>
-<span class="cstat-no" title="statement not covered" >    user_id: string,</span>
-<span class="cstat-no" title="statement not covered" >):Promise&lt;AxiosResponse&lt;IPlaylistResponse&gt; | undefined&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const config: AxiosRequestConfig = {</span>
-<span class="cstat-no" title="statement not covered" >        method: 'GET',</span>
-<span class="cstat-no" title="statement not covered" >        url: `https://api.spotify.com/v1/users/${user_id}/playlists`,</span>
-<span class="cstat-no" title="statement not covered" >        headers: {</span>
-<span class="cstat-no" title="statement not covered" >            Authorization: `Bearer ${access_token}`,</span>
-<span class="cstat-no" title="statement not covered" >        },</span>
-<span class="cstat-no" title="statement not covered" >        data: {</span>
-<span class="cstat-no" title="statement not covered" >            limit: '10',</span>
-<span class="cstat-no" title="statement not covered" >            offset: '0',</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >        return await axios.request(config);</span>
-<span class="cstat-no" title="statement not covered" >    } catch (e) {</span>
+export const gatherPlaylists = async (
+    access_token: string,
+    user_id: string,
+):Promise&lt;AxiosResponse&lt;IPlaylistResponse&gt; | undefined&gt; =&gt; {
+    const config: AxiosRequestConfig = {
+        method: 'GET',
+        url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+            limit: '10',
+            offset: '0',
+        }
+    }
+&nbsp;
+    try {
+        return await axios.request(config);
+<span class="branch-0 cbranch-no" title="branch not covered" >    } catch (e) {</span>
 <span class="cstat-no" title="statement not covered" >        console.log(e);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+}
 &nbsp;
 export const placeTracksInPlaylist = <span class="fstat-no" title="function not covered" >async (</span>
 <span class="cstat-no" title="statement not covered" >    playlistIds: Array&lt;string&gt;,</span>
@@ -301,7 +301,7 @@ export const placeTracksInPlaylist = <span class="fstat-no" title="function not 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-08T20:21:45.607Z
+                at 2023-11-08T20:46:11.694Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

@@ -62,12 +62,14 @@ const ChoiceModal:React.FC<ChoiceModalProps> = (props: ChoiceModalProps) => {
                 </Grid>
                 <Grid item>
                     <Button
+                        data-testid='mock-new-playlist'
                         onClick={() => setChoice(1)}
                         sx={choiceModalStyles}
                     >
                         New Playlist!!
                     </Button>
                     <Button
+                        data-testid='mock-current-playlists'
                         onClick={() => setChoice(2)}
                         sx={choiceModalStyles}
                     >

@@ -55,8 +55,10 @@ const PlaylistsModal:React.FC<PlaylistsModal> = (props: PlaylistsModal) => {
                     }
                     res.push(dataPoint);
                 });
-
                 setPlaylistData(res);
+            })
+            .catch((error) => {
+                console.log(error);
             });
         }
     }, [])
@@ -73,69 +75,54 @@ const PlaylistsModal:React.FC<PlaylistsModal> = (props: PlaylistsModal) => {
         }
     }, [submitButtonClicked])
 
-    if (playlistData.length === 0) {
-        return (
-            <Grid 
+   
+    return (
+        <Grid 
+            container
+            justifyContent='center'
+            alignItems='center'
+            {...props}
+        >
+            <Grid
                 container
+                alignItems='center' 
                 justifyContent='center'
-                alignItems='center'
-                {...props}
+                direction='column'
+                sx={gridModalStyles}
             >
+                <Grid item>
+                    <Typography
+                        sx={headerStyling}
+                    >Choose a Playlist</Typography>
+                </Grid>
                 <Grid
                     container
-                    alignItems='center' 
                     justifyContent='center'
-                    direction='column'
-                    sx={gridModalStyles}
+                    sx={parentResultsGridStyles}
                 >
-                
+                    {playlistData.map(item => 
+                        <PlaylistCard
+                            {...item}
+                        />
+                    )}
                 </Grid>
-            </Grid>
-        )  
-    } else {
-        return (
-            <Grid 
-                    container
-                    justifyContent='center'
-                    alignItems='center'
-                    {...props}
-                >
-                    <Grid
-                        container
-                        alignItems='center' 
-                        justifyContent='center'
-                        direction='column'
-                        sx={gridModalStyles}
-                    >
-                        <Grid item>
-                            <Typography
-                                sx={headerStyling}
-                            >Choose a Playlist</Typography>
-                        </Grid>
-                        <Grid
-                            container
-                            justifyContent='center'
-                            sx={parentResultsGridStyles}
-                        >
-                        {playlistData.map(item => 
-                            <PlaylistCard
-                                {...item}
-                            />
-                        )}
-                        </Grid>
+                {playlistData.length !== 0 // fit the stuff above in the conditional statement rendering
+                    ? 
                         <Button
-                            sx={buttonStyles}
-                            disabled={disableSubmit}
-                            onClick={() => {
-                                setSubmitButtonClicked(true);
-                            }}
-                        >
-                            Submit
+                                sx={buttonStyles}
+                                disabled={disableSubmit}
+                                onClick={() => {
+                                    setSubmitButtonClicked(true);
+                                }}
+                            >
+                                Submit
                         </Button>
-                    </Grid>
-                </Grid>
-            )
-    }
+                    : 
+                        <div></div>
+                }
+            </Grid>
+        </Grid>
+    )
     
 }
 

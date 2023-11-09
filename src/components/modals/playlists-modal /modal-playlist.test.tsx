@@ -1,5 +1,5 @@
 import { describe, test } from 'vitest';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import PlaylistsModal from './modal-playlist';
 
 describe('Playlists Modal', () => {

@@ -83,44 +83,43 @@ const PlaylistsModal:React.FC<PlaylistsModal> = (props: PlaylistsModal) => {
             alignItems='center'
             {...props}
         >
-            <Grid
-                container
-                alignItems='center' 
-                justifyContent='center'
-                direction='column'
-                sx={gridModalStyles}
-            >
-                <Grid item>
-                    <Typography
-                        sx={headerStyling}
-                    >Choose a Playlist</Typography>
-                </Grid>
+            {playlistData.length !== 0 ?
                 <Grid
                     container
+                    alignItems='center' 
                     justifyContent='center'
-                    sx={parentResultsGridStyles}
+                    direction='column'
+                    sx={gridModalStyles}
                 >
-                    {playlistData.map(item => 
-                        <PlaylistCard
-                            {...item}
-                        />
-                    )}
+                    <Grid item>
+                        <Typography
+                            sx={headerStyling}
+                        >Choose a Playlist</Typography>
+                    </Grid>
+                    <Grid
+                        container
+                        justifyContent='center'
+                        sx={parentResultsGridStyles}
+                    >
+                        {playlistData.map(item => 
+                            <PlaylistCard
+                                {...item}
+                            />
+                        )}
+                    </Grid>
+                    <Button
+                        sx={buttonStyles}
+                        disabled={disableSubmit}
+                        onClick={() => {
+                            setSubmitButtonClicked(true);
+                        }}
+                    >
+                        Submit
+                    </Button>
                 </Grid>
-                {playlistData.length !== 0 // fit the stuff above in the conditional statement rendering
-                    ? 
-                        <Button
-                                sx={buttonStyles}
-                                disabled={disableSubmit}
-                                onClick={() => {
-                                    setSubmitButtonClicked(true);
-                                }}
-                            >
-                                Submit
-                        </Button>
-                    : 
-                        <div></div>
-                }
-            </Grid>
+            : 
+                    <Grid></Grid>
+            }
         </Grid>
     )
     

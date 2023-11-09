@@ -27,6 +27,7 @@ const PlaylistCard:React.FC<PlaylistCardProps> = (props: PlaylistCardProps) => {
             container
         >
             <Paper
+                data-testid='mock-playlist-card'
                 sx={styling}
                 {...props}
                 onClick={() => {

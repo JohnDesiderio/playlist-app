@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import PlaylistsModal from './modal-playlist';
+import PlaylistCard from './playlist-card';
 
 describe('Playlists Modal', () => {
     test('Render Playlists Modal', () => {
@@ -13,3 +14,18 @@ describe('Playlists Modal', () => {
         />)
     })
 })
+
+describe('Playlist Card', () => {
+    test('Render the playlist card', () => {
+        const wrapper = render(<PlaylistCard
+            image='mock-image'
+            id='mock-id'
+            name='mock-name'
+            handleCallback={() => {}}
+        />);
+
+        const paper = wrapper.getByTestId('mock-playlist-card');
+
+        fireEvent.click(paper);
+    });
+}) 

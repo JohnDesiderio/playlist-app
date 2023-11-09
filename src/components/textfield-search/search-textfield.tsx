@@ -24,6 +24,9 @@ const SearchTextField:React.FC<SearchTextFieldProps> = (props: SearchTextFieldPr
 
     return (
         <TextField
+            inputProps={{
+                'data-testid': 'mock-search-function'
+            }}
             {...props}
             sx={searchTextFieldStyles}
             helperText='Search a song!'

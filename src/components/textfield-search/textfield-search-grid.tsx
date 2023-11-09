@@ -64,6 +64,7 @@ const TextfieldSearchGrid:React.FC<ITextfieldSearchGrid> = (props: ITextfieldSea
                 handleDisable={textfieldCallback}
             />
             <SearchButton 
+                data-testid='search-button'
                 onClick={() => {setButtonPress(!buttonPress)}}
                 disabled={disableSearch}
             />

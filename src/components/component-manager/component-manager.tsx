@@ -42,7 +42,8 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     const handleChoiceModal = (open: boolean) => setChoiceModal(open);
 
-    //Avoid nesting too many async functions cuz I need to be able to read it lmao
+    // Avoid nesting too many async functions cuz it needs to be readable lol
+    // Refactor and introduce new page using routing for redesign!!!
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -66,7 +67,6 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
 
     useEffect(() => {    
         if (displayName !== undefined && userId !== undefined && accessToken !== undefined) {
-            //buildThePlaylist(accessToken, userId, displayName, handleResetModalOpen, handleLoadingModal);
             handleChoiceModal(true);
         }
     }, [displayName, userId])

@@ -14,7 +14,6 @@ import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpot
 import { Observable, from, filter } from 'rxjs';
 
 // Export const to make it easier for dev env
-//export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/';
 export const REDIRECT_URI = 'http://localhost:5173/playlist-app/';
 
 export const getAllDocuments = async (): Promise<number> => {

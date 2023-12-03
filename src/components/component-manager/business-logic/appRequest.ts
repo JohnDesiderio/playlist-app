@@ -14,7 +14,8 @@ import { ISpotifyAccessToken } from '../../textfield-search/business-logic/ISpot
 import { Observable, from, filter } from 'rxjs';
 
 // Export const to make it easier for dev env
-export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/';
+//export const REDIRECT_URI = 'https://johndesiderio.github.io/playlist-app/';
+export const REDIRECT_URI = 'http://localhost:5173/playlist-app/';
 
 export const getAllDocuments = async (): Promise<number> => {
     return (await getDocs(tracksCol)).size;
@@ -65,7 +66,7 @@ export const getAccessToken = async (
     }
 }
 
-const generateRandomString = (length:number):string => {
+export const generateRandomString = (length:number):string => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghhijklmopqrstuvwxyz1234567890';
 
@@ -76,7 +77,7 @@ const generateRandomString = (length:number):string => {
     return text;
 }
 
-const generateCodeChallenge = async (codeVerifier: string):Promise<string> => {
+export const generateCodeChallenge = async (codeVerifier: string):Promise<string> => {
     const data = new TextEncoder().encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
     return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))

@@ -102,12 +102,14 @@ const ComponentManagerGrid:React.FC<GridProps> = (props: GridProps) => {
             >   
                 <Grid item>
                     <Button
+                        data-testid='mock-about-button'
                         onClick={handleAboutModalOpen}
                         sx={buttonStyles}
                     >
                         About
                     </Button>
                     <Button
+                        data-testid='mock-mix-songs-button'
                         onClick={() => {
                             setButtonPress(buttonPress + 1);
                         }}

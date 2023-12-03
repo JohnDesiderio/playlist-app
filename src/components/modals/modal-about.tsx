@@ -34,6 +34,7 @@ const AboutModal:React.FC<AboutModalProps> = (props: AboutModalProps) => {
                 </Grid>
                 <Grid item>
                     <Button
+                        data-testid='mock-about-button-close'
                         onClick={props.exit_function}
                         sx={exitButtonStyles}
                     >
